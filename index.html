@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Interaktif PARHATA BPS Provinsi Sumatera Utara</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Slate, Amber, Stone -->
+    <!-- Application Structure Plan: Desain aplikasi diperbarui untuk menonjolkan linimasa proses dan mengklarifikasi tugas hibrida baru untuk data Pelatihan & Seminar. Struktur peran ganda (Pegawai/Verifikator) dipertahankan. Alur kerja pegawai kini secara visual memisahkan tugas 'melengkapi' data otomatis, tugas 'memeriksa & menambah' data semi-otomatis, dan tugas 'input baru' data manual. Ini memberikan kejelasan yang lebih baik tentang sifat setiap tugas, yang merupakan inti dari pembaruan alur kerja. Jadwal periode ditambahkan sebagai elemen utama untuk memberikan konteks waktu yang krusial. -->
+    <!-- Visualization & Content Choices: 
+        1. Linimasa Proses -> Goal: Inform/Context -> Method: Diagram linimasa horizontal yang dibangun dengan HTML/CSS. Ini secara visual menyoroti tanggal-tanggal penting (periode input & verifikasi) yang disebutkan dalam dokumen baru, memberikan pengguna pemahaman langsung tentang tenggat waktu.
+        2. Alur Kerja (Pegawai) -> Goal: Organize/Guide -> Method: Diagram proses interaktif (HTML/CSS) dipertahankan tetapi diperbarui. Langkah 'Pelatihan & Seminar' diubah untuk mencerminkan tugas ganda (periksa & tambah).
+        3. Pembagian Tugas (Pegawai) -> Goal: Inform/Synthesize -> Method: Chart.js Doughnut Chart diperbarui. Label dan data diubah menjadi 'Lengkapi Data Otomatis' (Jabatan, Pendidikan), 'Periksa & Tambah' (Pelatihan, Seminar), dan 'Input Data Baru' (Sertifikasi, Kinerja) untuk secara akurat mencerminkan alur kerja yang baru.
+        4. Detail Tugas -> Goal: Inform/Drill-down -> Method: Konten kartu detail, khususnya untuk 'Pelatihan & Seminar', ditulis ulang sepenuhnya untuk menjelaskan tanggung jawab ganda: memeriksa data dari SIMPEG dan menambahkan data baru secara manual.
+        Justification: Pembaruan ini secara langsung mengatasi perubahan dalam dokumen sumber. Linimasa baru dan bagan yang direvisi memberikan kejelasan instan tentang 'kapan' dan 'apa' yang harus dilakukan, sementara detail yang diperbarui menjelaskan 'bagaimana' melakukannya, meningkatkan kegunaan panduan sebagai alat bantu kerja yang akurat.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .task-step {
+            transition: all 0.3s ease;
+            border-width: 2px;
+        }
+        .task-step.active {
+            border-color: #f59e0b; /* amber-500 */
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .tab-button.active {
+            background-color: #f59e0b; /* amber-500 */
+            color: #ffffff;
+        }
+        .tab-button {
+            transition: all 0.2s ease-in-out;
+        }
+        .detail-card {
+            display: none;
+        }
+        .detail-card.active {
+            display: block;
+        }
+        .hidden {
+            display: none;
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+            padding-left: 2.5rem;
+            border-left: 2px solid #e2e8f0; /* slate-200 */
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -0.7rem;
+            top: 0;
+            height: 1.25rem;
+            width: 1.25rem;
+            border-radius: 9999px;
+            border-width: 4px;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-800">Panduan Penggunaan Aplikasi PARHATA</h1>
+            <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Tahapan dan jadwal pemutakhiran data mandiri dan proses verifikasi di lingkungan BPS Provinsi Sumatera Utara.</p>
+        </header>
+
+        <!-- Timeline Section -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-center mb-8 text-slate-800">Linimasa Proses Pemutakhiran Data</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="relative">
+                    <!-- Item 1 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot bg-amber-500 border-white"></div>
+                        <time class="text-sm font-semibold text-amber-600">16–18 Juli 2025</time>
+                        <h3 class="text-lg font-bold text-slate-800 mt-1">Periode Pengisian Data Mandiri</h3>
+                        <p class="text-slate-600">Pegawai melakukan pemutakhiran data portofolio di PARHATA.</p>
+                    </div>
+                     <!-- Item 2 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot bg-slate-400 border-white"></div>
+                        <time class="text-sm font-semibold text-slate-500">18 Juli 2025, 23:59 WIB</time>
+                        <h3 class="text-lg font-bold text-slate-800 mt-1">Penguncian Data</h3>
+                        <p class="text-slate-600">Sistem otomatis mengunci akses input dan edit bagi pegawai.</p>
+                    </div>
+                     <!-- Item 3 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot bg-fuchsia-500 border-white"></div>
+                        <time class="text-sm font-semibold text-fuchsia-600">21–25 Juli 2025</time>
+                        <h3 class="text-lg font-bold text-slate-800 mt-1">Periode Penilaian / Verifikasi</h3>
+                        <p class="text-slate-600">Tim Verifikator melakukan penilaian terhadap seluruh data pegawai.</p>
+                    </div>
+                     <!-- Item 4 -->
+                    <div class="timeline-item" style="border-left: 2px solid transparent;">
+                        <div class="timeline-dot bg-green-500 border-white"></div>
+                        <h3 class="text-lg font-bold text-slate-800 mt-1">Hasil Penilaian</h3>
+                        <p class="text-slate-600">Hasil akhir disampaikan kepada pegawai melalui sistem PARHATA.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Role Selector -->
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-center mb-6 text-slate-800">Pilih peran Anda untuk memulai:</h2>
+            <div class="flex justify-center items-center gap-4">
+                <button id="pegawaiBtn" class="tab-button active text-lg font-semibold py-3 px-8 bg-white rounded-lg shadow-md hover:bg-amber-400 hover:text-white">Saya Pegawai</button>
+                <button id="verifierBtn" class="tab-button text-lg font-semibold py-3 px-8 bg-white rounded-lg shadow-md hover:bg-amber-400 hover:text-white">Saya Tim Verifikasi</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Pegawai View -->
+            <div id="pegawaiView">
+                <section id="pegawai-intro" class="mb-12 text-center bg-amber-50 border-2 border-amber-200 rounded-xl p-6">
+                    <h3 class="text-2xl font-bold text-amber-900 mb-2">Role Pegawai</h3>
+                    <p class="text-amber-800">Tugas Anda adalah melengkapi, memeriksa, menambah, dan menginput data portofolio Anda. Ikuti langkah-langkah di bawah ini selama periode <strong>16-18 Juli 2025</strong>.</p>
+                </section>
+
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                    <!-- Flowchart Column -->
+                    <div class="lg:col-span-2">
+                        <div class="sticky top-8">
+                            <h4 class="text-xl font-bold mb-4 text-center text-slate-800">Klik Langkah untuk Lihat Detail</h4>
+                            <div id="pegawai-flow" class="space-y-4">
+                                <div class="task-step active cursor-pointer bg-white p-4 rounded-lg shadow-md border-l-4 border-slate-200" data-target="detail-login">
+                                    <h5 class="font-bold text-slate-800">Langkah 1: Login & Persiapan</h5>
+                                    <p class="text-sm text-slate-500">Akses aplikasi dan pastikan data SIMPEG mutakhir.</p>
+                                </div>
+                                <div class="p-4 rounded-lg bg-blue-50 border-2 border-blue-200 text-center">
+                                    <p class="font-semibold text-blue-800">Bagian A: Lengkapi Data Otomatis</p>
+                                </div>
+                                <div class="task-step cursor-pointer bg-white p-4 rounded-lg shadow-md border-l-4 border-slate-200" data-target="detail-jabatan">
+                                    <h5 class="font-bold text-slate-800">Lengkapi Riwayat Jabatan</h5>
+                                    <p class="text-sm text-slate-500">Tugas: Isi relevansi & dampak.</p>
+                                </div>
+                                <div class="task-step cursor-pointer bg-white p-4 rounded-lg shadow-md border-l-4 border-slate-200" data-target="detail-pendidikan">
+                                    <h5 class="font-bold text-slate-800">Lengkapi Riwayat Pendidikan</h5>
+                                    <p class="text-sm text-slate-500">Tugas: Isi prestasi & relevansi + unggah bukti.</p>
+                                </div>
+                                <div class="p-4 rounded-lg bg-cyan-50 border-2 border-cyan-200 text-center">
+                                    <p class="font-semibold text-cyan-800">Bagian B: Periksa & Tambah Data</p>
+                                </div>
+                                <div class="task-step cursor-pointer bg-white p-4 rounded-lg shadow-md border-l-4 border-slate-200" data-target="detail-pelatihan">
+                                    <h5 class="font-bold text-slate-800">Periksa & Tambah Pelatihan/Seminar</h5>
+                                    <p class="text-sm text-slate-500">Tugas: Verifikasi data SIMPEG & input manual data baru.</p>
+                                </div>
+                                <div class="p-4 rounded-lg bg-green-50 border-2 border-green-200 text-center">
+                                    <p class="font-semibold text-green-800">Bagian C: Input Data Baru</p>
+                                </div>
+                                <div class="task-step cursor-pointer bg-white p-4 rounded-lg shadow-md border-l-4 border-slate-200" data-target="detail-sertifikasi">
+                                    <h5 class="font-bold text-slate-800">Input Riwayat Sertifikasi</h5>
+                                    <p class="text-sm text-slate-500">Tugas: Isi data baru dan unggah sertifikat.</p>
+                                </div>
+                                <div class="task-step cursor-pointer bg-white p-4 rounded-lg shadow-md border-l-4 border-slate-200" data-target="detail-kinerja">
+                                    <h5 class="font-bold text-slate-800">Input Pencapaian Kinerja</h5>
+                                    <p class="text-sm text-slate-500">Tugas: Isi data baru dan unggah bukti.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Details Column -->
+                    <div class="lg:col-span-3">
+                        <div id="pegawai-details-container" class="bg-white rounded-xl shadow-lg p-6 min-h-[500px]">
+                            <div id="detail-login" class="detail-card active">
+                                <h4 class="text-2xl font-bold mb-4 text-slate-800">Langkah 1: Login & Persiapan</h4>
+                                <ol class="list-decimal list-inside space-y-2 text-slate-600 mb-6">
+                                    <li>Buka situs <a href="https://parhata.bps.web.id/" target="_blank" class="text-amber-600 font-semibold hover:underline">https://parhata.bps.web.id/</a>.</li>
+                                    <li>Gunakan akun **SSO BPS** Anda untuk login.</li>
+                                    <li><span class="font-bold">PENTING:</span> Sebelum memulai, pastikan data Anda di SIMPEG sudah mutakhir.</li>
+                                </ol>
+                                <div class="p-4 bg-slate-50 rounded-lg">
+                                    <h5 class="font-bold text-slate-800">Tahapan Penginputan Data Mandiri (Update Panduan PARHATA)</h5>
+                                    <p class="text-sm text-slate-600 mb-4">Bagan ini menunjukkan proporsi pekerjaan Anda di PARHATA.</p>
+                                    <div class="chart-container relative h-64 md:h-72 w-full max-w-sm mx-auto">
+                                        <canvas id="tasksChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="detail-jabatan" class="detail-card">
+                                <h4 class="text-2xl font-bold mb-4 text-slate-800">Melengkapi Riwayat Jabatan</h4>
+                                <p class="mb-4">Data ditarik otomatis dari SIMPEG dan dikelola oleh Tim SDM. Anda tidak perlu input ulang.</p>
+                                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                                    <p class="font-bold text-blue-800">Tugas Anda:</p>
+                                    <ul class="list-disc list-inside space-y-1 mt-2 text-blue-700">
+                                        <li>Periksa data yang ditampilkan.</li>
+                                        <li>Lengkapi kolom **"Relevansi"** dan **"Dampak/Kontribusi"**.</li>
+                                        <li>Simpan perubahan untuk diajukan.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="detail-pendidikan" class="detail-card">
+                                <h4 class="text-2xl font-bold mb-4 text-slate-800">Melengkapi Riwayat Pendidikan</h4>
+                                <p class="mb-4">Data ditarik otomatis dari SIMPEG. Fokus pada jenjang D-III ke atas.</p>
+                                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                                    <p class="font-bold text-blue-800">Tugas Anda:</p>
+                                    <ul class="list-disc list-inside space-y-1 mt-2 text-blue-700">
+                                        <li>Klik **"Lengkapi"** pada data yang relevan.</li>
+                                        <li>Isi **"Prestasi Akademik"** dan **"Relevansi Pendidikan"**.</li>
+                                        <li>Unggah **bukti dukung (Ijazah & Transkrip)** dalam format PDF.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="detail-pelatihan" class="detail-card">
+                                <h4 class="text-2xl font-bold mb-4 text-slate-800">Periksa & Tambah Pelatihan/Seminar</h4>
+                                <p class="mb-4">Ini adalah tugas ganda. Anda wajib memeriksa data dari SIMPEG dan menambahkan data yang belum tercatat.</p>
+                                <div class="bg-cyan-50 border-l-4 border-cyan-500 p-4 rounded-r-lg">
+                                    <p class="font-bold text-cyan-800">Tugas Anda:</p>
+                                    <ul class="list-disc list-inside space-y-2 mt-2 text-cyan-700">
+                                        <li><b>Periksa Data Otomatis:</b> Tinjau data pelatihan/seminar yang ditarik dari SIMPEG dan verifikasi relevansinya.</li>
+                                        <li><b>Input Manual Data Baru:</b> Jika ada pelatihan atau seminar yang pernah diikuti namun belum tercatat, input data tersebut secara manual beserta bukti dukungnya.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="detail-sertifikasi" class="detail-card">
+                                <h4 class="text-2xl font-bold mb-4 text-slate-800">Input Riwayat Sertifikasi</h4>
+                                <p class="mb-4">Input manual sertifikasi yang belum ada di SIMPEG.</p>
+                                <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
+                                    <p class="font-bold text-green-800">Tugas Anda:</p>
+                                     <ul class="list-disc list-inside space-y-1 mt-2 text-green-700">
+                                        <li>Klik menu **"Riwayat Sertifikasi"** > **"Buat riwayat sertifikasi"**.</li>
+                                        <li>Isi semua informasi dan unggah sertifikat PDF.</li>
+                                        <li>Sertifikat harus masih berlaku atau diperoleh maks. 3 tahun terakhir.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="detail-kinerja" class="detail-card">
+                                <h4 class="text-2xl font-bold mb-4 text-slate-800">Input Pencapaian Kinerja</h4>
+                                <p class="mb-4">Input manual data pencapaian kinerja Anda.</p>
+                                <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
+                                    <p class="font-bold text-green-800">Tugas Anda:</p>
+                                     <ul class="list-disc list-inside space-y-1 mt-2 text-green-700">
+                                        <li>Klik menu **"Penilaian Pencapaian Kinerja"** > **"Buat Pencapaian"**.</li>
+                                        <li>Isi detail kinerja, kontribusi proyek, dan penghargaan.</li>
+                                        <li>Unggah bukti pendukung (SKP, laporan, piagam) dalam format PDF.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verifier View -->
+            <div id="verifierView" class="hidden">
+                 <section class="mb-12 text-center bg-fuchsia-50 border-2 border-fuchsia-200 rounded-xl p-6">
+                    <h3 class="text-2xl font-bold text-fuchsia-900 mb-2">Alur Kerja Tim Verifikasi</h3>
+                    <p class="text-fuchsia-800">Selama periode <strong>21-25 Juli 2025</strong>, tugas Anda adalah menilai seluruh data portofolio pegawai berdasarkan panduan, kamus jabatan, dan matriks penilaian yang berlaku.</p>
+                </section>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-bold mb-4 text-slate-800">Tugas Utama Verifikasi</h4>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-lg shadow-md">
+                                <h5 class="font-bold text-slate-800">1. Verifikasi Data dari SIMPEG</h5>
+                                <ul class="list-disc list-inside space-y-1 mt-2 text-slate-600 text-sm pl-2">
+                                    <li><b>Jabatan & Pendidikan:</b> Validasi isian "Relevansi" dan "Dampak/Prestasi" dari pegawai.</li>
+                                    <li><b>Pelatihan & Seminar (dari SIMPEG):</b> Cek dan sesuaikan relevansi.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-md">
+                                <h5 class="font-bold text-slate-800">2. Verifikasi Data Input Mandiri</h5>
+                                <ul class="list-disc list-inside space-y-1 mt-2 text-slate-600 text-sm pl-2">
+                                    <li><b>Pelatihan & Seminar (Baru):</b> Lakukan verifikasi penuh pada data dan bukti yang diinput manual oleh pegawai.</li>
+                                    <li><b>Sertifikasi & Kinerja:</b> Lakukan verifikasi penuh pada data dan bukti.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xl font-bold mb-4 text-slate-800">Simulasi Alat Bantu: Kalkulator Skor</h4>
+                        <div class="bg-white p-6 rounded-xl shadow-lg">
+                            <p class="text-sm text-slate-600 mb-4">Gunakan alat ini untuk mensimulasikan perhitungan skor riwayat jabatan.</p>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="tingkatJabatan" class="block text-sm font-medium text-slate-700">Tingkat Jabatan</label>
+                                    <select id="tingkatJabatan" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm rounded-md">
+                                        <option value="10">Pelaksana / Fungsional Pertama</option>
+                                        <option value="30">Fungsional Ahli Muda</option>
+                                        <option value="50">Fungsional Ahli Madya</option>
+                                        <option value="70">Struktural Eselon III / IV</option>
+                                        <option value="100">Struktural Eselon II</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="relevansiJabatan" class="block text-sm font-medium text-slate-700">Relevansi</label>
+                                    <select id="relevansiJabatan" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm rounded-md">
+                                        <option value="0">Tidak Relevan</option>
+                                        <option value="25">Sebagian Relevan</option>
+                                        <option value="50">Sangat Relevan</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="durasiJabatan" class="block text-sm font-medium text-slate-700">Durasi</label>
+                                    <select id="durasiJabatan" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm rounded-md">
+                                        <option value="10">Kurang dari 1 tahun</option>
+                                        <option value="40">1 - 3 tahun</option>
+                                        <option value="50">Lebih dari 3 tahun</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="dampakJabatan" class="block text-sm font-medium text-slate-700">Dampak</label>
+                                    <select id="dampakJabatan" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm rounded-md">
+                                        <option value="20">Dampak Rendah</option>
+                                        <option value="50">Dampak Sedang</option>
+                                        <option value="80">Dampak Tinggi</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mt-6 pt-4 border-t">
+                                <p class="text-slate-600">Estimasi Skor Jabatan:</p>
+                                <p id="totalScore" class="text-4xl font-bold text-amber-600">90 Poin</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="text-center mt-16 border-t pt-8">
+            <p class="text-slate-500">Aplikasi Panduan Interaktif PARHATA &copy; 2025</p>
+            <p class="text-sm text-slate-400 mt-1">Dibuat untuk mempermudah proses pemutakhiran data di BPS Provinsi Sumatera Utara.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const pegawaiBtn = document.getElementById('pegawaiBtn');
+            const verifierBtn = document.getElementById('verifierBtn');
+            const pegawaiView = document.getElementById('pegawaiView');
+            const verifierView = document.getElementById('verifierView');
+
+            pegawaiBtn.addEventListener('click', () => {
+                pegawaiView.classList.remove('hidden');
+                verifierView.classList.add('hidden');
+                pegawaiBtn.classList.add('active');
+                verifierBtn.classList.remove('active');
+            });
+
+            verifierBtn.addEventListener('click', () => {
+                pegawaiView.classList.add('hidden');
+                verifierView.classList.remove('hidden');
+                pegawaiBtn.classList.remove('active');
+                verifierBtn.classList.add('active');
+                calculateScore();
+            });
+
+            const steps = document.querySelectorAll('#pegawai-flow .task-step');
+            const details = document.querySelectorAll('#pegawai-details-container .detail-card');
+
+            steps.forEach(step => {
+                step.addEventListener('click', () => {
+                    steps.forEach(s => s.classList.remove('active'));
+                    step.classList.add('active');
+
+                    const targetId = step.dataset.target;
+                    details.forEach(detail => {
+                        detail.classList.remove('active');
+                        if (detail.id === targetId) {
+                            detail.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            const scoreInputs = [
+                document.getElementById('tingkatJabatan'),
+                document.getElementById('relevansiJabatan'),
+                document.getElementById('durasiJabatan'),
+                document.getElementById('dampakJabatan')
+            ];
+            const totalScoreEl = document.getElementById('totalScore');
+
+            function calculateScore() {
+                let total = scoreInputs.reduce((sum, input) => sum + parseInt(input.value, 10), 0);
+                totalScoreEl.textContent = `${total} Poin`;
+            }
+
+            scoreInputs.forEach(input => input.addEventListener('change', calculateScore));
+            
+            calculateScore();
+
+            const ctx = document.getElementById('tasksChart').getContext('2d');
+            const tasksChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Lengkapi Data Otomatis', 'Periksa & Tambah Data', 'Input Data Baru'],
+                    datasets: [{
+                        label: 'Pembagian Tugas',
+                        data: [2, 1, 2],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.7)', // blue-500
+                            'rgba(6, 182, 212, 0.7)',  // cyan-500
+                            'rgba(34, 197, 94, 0.7)'   // green-500
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(6, 182, 212, 1)',
+                            'rgba(34, 197, 94, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: false,
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
