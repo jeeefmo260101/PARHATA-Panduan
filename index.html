@@ -72,11 +72,9 @@
             overflow: hidden;
             transition: max-height 0.5s ease-out;
         }
-        /* Adjusted max-height for better content display */
         .accordion-button.open + .accordion-content {
             max-height: 2000px; /* Increased for more content */
         }
-        /* Adjusted text color for better readability */
         .accordion-content {
             color: #d1d5db; /* gray-300 */
         }
@@ -183,15 +181,15 @@
 
         /* Styles from index.html for Certification */
         .info-box {
-            background-color: #4a5568;
-            border-left: 4px solid #63b3ed;
+            background-color: #1e3a8a; /* bg-blue-900/20 */
+            border-left: 4px solid #3b82f6; /* border-blue-500 */
             padding: 1rem;
             border-radius: 0.5rem;
             margin-bottom: 1.5rem;
-            color: #e2e8f0;
+            color: #bfdbfe; /* text-blue-200 */
         }
         .button-primary {
-            background-color: #4299e1;
+            background-color: #2563eb; /* bg-blue-600 */
             color: white;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
@@ -201,11 +199,11 @@
             border: none;
         }
         .button-primary:hover {
-            background-color: #3182ce;
+            background-color: #1d4ed8; /* bg-blue-700 */
         }
         .button-secondary {
-            background-color: #a0aec0;
-            color: #2d3748;
+            background-color: #4b5563; /* bg-gray-600 */
+            color: #e5e7eb; /* text-gray-200 */
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
             font-weight: 600;
@@ -214,7 +212,7 @@
             border: none;
         }
         .button-secondary:hover {
-            background-color: #718096;
+            background-color: #374151; /* bg-gray-700 */
         }
         .form-group {
             margin-bottom: 1.5rem;
@@ -223,23 +221,23 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
-            color: #cbd5e0;
+            color: #d1d5db; /* text-gray-300 */
         }
         .form-group input,
         .form-group select {
             width: 100%;
             padding: 0.75rem;
             border-radius: 0.5rem;
-            border: 1px solid #4a5568;
-            background-color: #2d3748;
-            color: #e2e8f0;
+            border: 1px solid #4b5563; /* border-gray-600 */
+            background-color: #374151; /* bg-gray-700 */
+            color: #f3f4f6; /* text-gray-100 */
             box-sizing: border-box;
         }
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #63b3ed;
-            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+            border-color: #3b82f6; /* border-blue-500 */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
         }
         .grid-cols-2 {
             display: grid;
@@ -253,7 +251,7 @@
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            background-color: #2d3748;
+            background-color: #374151; /* bg-gray-700 */
             border-radius: 0.5rem;
             overflow: hidden;
         }
@@ -261,11 +259,12 @@
         .data-table td {
             padding: 1rem;
             text-align: left;
-            border-bottom: 1px solid #4a5568;
+            border-bottom: 1px solid #4b5563; /* border-gray-600 */
+            color: #d1d5db; /* text-gray-300 */
         }
         .data-table th {
-            background-color: #4a5568;
-            color: #cbd5e0;
+            background-color: #4b5563; /* bg-gray-600 */
+            color: #e5e7eb; /* text-gray-200 */
             font-weight: 600;
             text-transform: uppercase;
             font-size: 0.875rem;
@@ -281,19 +280,19 @@
             font-weight: 600;
         }
         .data-table .status-badge.diajukan {
-            background-color: #f6ad55; /* Orange */
-            color: #2d3748;
+            background-color: #f59e0b; /* Amber-500 */
+            color: #1f2937;
         }
         .data-table .status-badge.disetujui {
-            background-color: #68d391; /* Green */
-            color: #2d3748;
+            background-color: #10b981; /* Emerald-500 */
+            color: #1f2937;
         }
         .data-table .status-badge.ditolak {
-            background-color: #fc8181; /* Red */
-            color: #2d3748;
+            background-color: #ef4444; /* Red-500 */
+            color: #f3f4f6;
         }
-        .action-links a, .action-links button {
-            color: #63b3ed;
+        .action-links button {
+            color: #60a5fa; /* blue-400 */
             margin-right: 0.75rem;
             text-decoration: none;
             transition: color 0.2s;
@@ -301,12 +300,12 @@
             border: none;
             cursor: pointer;
         }
-        .action-links a:hover, .action-links button:hover {
-            color: #4299e1;
+        .action-links button:hover {
+            color: #3b82f6; /* blue-500 */
         }
         .filter-buttons button {
-            background-color: #4a5568;
-            color: #cbd5e0;
+            background-color: #4b5563; /* bg-gray-600 */
+            color: #d1d5db; /* text-gray-300 */
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
             margin-right: 0.5rem;
@@ -317,15 +316,15 @@
         }
         .filter-buttons button.active,
         .filter-buttons button:hover {
-            background-color: #63b3ed;
+            background-color: #3b82f6; /* blue-500 */
             color: #ffffff;
         }
         .search-input {
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
-            border: 1px solid #4a5568;
-            background-color: #2d3748;
-            color: #e2e8f0;
+            border: 1px solid #4b5563; /* border-gray-600 */
+            background-color: #374151; /* bg-gray-700 */
+            color: #f3f4f6; /* text-gray-100 */
             width: 200px;
         }
         .modal {
@@ -342,7 +341,7 @@
             align-items: center;
         }
         .modal-content {
-            background-color: #2d3748;
+            background-color: #374151; /* bg-gray-700 */
             margin: auto;
             padding: 2rem;
             border-radius: 0.75rem;
@@ -352,7 +351,7 @@
             position: relative;
         }
         .close-button {
-            color: #aaa;
+            color: #9ca3af; /* text-gray-400 */
             position: absolute;
             top: 10px;
             right: 20px;
@@ -362,7 +361,7 @@
         }
         .close-button:hover,
         .close-button:focus {
-            color: #e2e8f0;
+            color: #f3f4f6; /* text-gray-100 */
             text-decoration: none;
         }
 
@@ -374,32 +373,37 @@
             margin-top: 1.5rem;
         }
         .certification-card {
-            background-color: #4a5568;
+            background-color: #4b5563; /* bg-gray-600 */
             padding: 1.5rem;
             border-radius: 0.75rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .certification-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
         }
         .certification-card h3 {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 600;
             color: #ffffff;
             margin-bottom: 0.5rem;
         }
         .certification-card p {
             font-size: 0.95rem;
-            color: #cbd5e0;
+            color: #d1d5db; /* text-gray-300 */
             margin-bottom: 0.5rem;
         }
         .certification-card .level-narrative {
             font-style: italic;
             font-size: 0.85rem;
-            color: #a0aec0;
+            color: #9ca3af; /* text-gray-400 */
             margin-top: 0.75rem;
             padding-top: 0.75rem;
-            border-top: 1px solid #63b3ed;
+            border-top: 1px solid #60a5fa; /* border-blue-400 */
         }
         .certification-card .card-actions {
             display: flex;
@@ -413,8 +417,8 @@
             border-radius: 0.375rem;
         }
         .view-toggle-buttons button {
-            background-color: #4a5568;
-            color: #cbd5e0;
+            background-color: #4b5563; /* bg-gray-600 */
+            color: #d1d5db; /* text-gray-300 */
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
             margin-left: 0.5rem;
@@ -424,12 +428,12 @@
         }
         .view-toggle-buttons button.active,
         .view-toggle-buttons button:hover {
-            background-color: #63b3ed;
+            background-color: #3b82f6; /* blue-500 */
             color: #ffffff;
         }
         .narrative-explanation {
             font-size: 0.875rem;
-            color: #a0aec0;
+            color: #9ca3af; /* text-gray-400 */
             margin-top: 0.5rem;
             min-height: 1.5rem; /* Ensure space even when empty */
         }
@@ -462,12 +466,12 @@
 
         /* New styles for dropdown explanation box */
         .explanation-box {
-            background-color: #2d3748; /* bg-gray-800 */
-            border: 1px solid #4a5568; /* border-gray-600 */
+            background-color: #1f2937; /* bg-gray-800 */
+            border: 1px solid #4b5563; /* border-gray-600 */
             border-radius: 0.75rem; /* rounded-xl */
             padding: 1.5rem;
             margin-top: 1.5rem;
-            color: #e2e8f0; /* text-gray-200 */
+            color: #d1d5db; /* text-gray-300 */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             display: none; /* Hidden by default */
         }
@@ -481,7 +485,6 @@
         .explanation-box ul li {
             margin-bottom: 0.25rem;
         }
-
     </style>
 </head>
 <body class="bg-slate-100">
@@ -580,7 +583,7 @@
                                 </a>
                             </nav>
                         </aside>
-                           <!-- Inner Content for Jabatan -->
+                            <!-- Inner Content for Jabatan -->
                         <div class="flex-1 p-6 lg:p-10 overflow-y-auto">
                             <section id="jabatan-panduan-umum" class="jabatan-content-section active">
                                 <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
@@ -794,18 +797,18 @@
                                 <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
                                     <h3 class="text-2xl font-bold text-white mb-4">1. Kategori Pelatihan</h3>
                                     <div class="prose max-w-none text-gray-400 space-y-4">
-                                           <div class="p-4 border-l-4 border-blue-500 bg-blue-900/20 rounded-r-lg">
+                                            <div class="p-4 border-l-4 border-blue-500 bg-blue-900/20 rounded-r-lg">
                                                 <h4 class="font-bold text-lg text-blue-300">A. Pelatihan / Workshop</h4>
                                                 <p>Termasuk semua diklat, pelatihan, workshop, bimbingan teknis (bimtek) baik daring maupun luring.</p>
                                                 <div class="mt-3 p-3 bg-red-900/20 border-l-4 border-red-500 text-red-300 rounded-r-md"><p class="font-semibold">PERHATIAN: Jika pelatihan dilakukan secara daring dan memakai platform digital, masuk ke kategori E-Learning (Non-Klasikal).</p></div>
                                                 <p class="mt-3">Sertifikat harus mencantumkan jumlah Jam Pelajaran (JP). Jika tidak, unggah juga:</p>
                                                 <ul class="list-disc list-inside mt-1 space-y-1"><li>Tertib Acara / Rundown Acara untuk menghitung jumlah jam pelaksanaan.</li></ul>
-                                           </div>
-                                           <div class="p-4 border-l-4 border-green-500 bg-green-900/20 rounded-r-lg">
+                                            </div>
+                                            <div class="p-4 border-l-4 border-green-500 bg-green-900/20 rounded-r-lg">
                                                 <h4 class="font-bold text-lg text-green-300">B. Seminar / Webinar</h4>
                                                 <p>Termasuk ke dalam pelatihan klasikal walaupun diselenggarakan secara daring. Tujuannya adalah pemberian wawasan/pengetahuan, bukan keterampilan langsung. Biasanya berdurasi singkat (beberapa jam – 1 hari).</p>
                                                 <p class="mt-3">Sertifikat harus diunggah, dan bila tidak mencantumkan JP, bisa dihitung dari jadwal acara.</p>
-                                           </div>
+                                            </div>
                                     </div>
                                 </div>
                             </section>
@@ -822,7 +825,7 @@
                                 <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
                                     <h3 class="text-2xl font-bold text-white mb-4">3. Simulasi Pengisian di SIMPEG</h3>
                                     <div class="overflow-x-auto"><table class="min-w-full border border-gray-700 rounded-lg"><thead class="bg-gray-700"><tr><th class="p-3 text-left font-semibold text-gray-300">Kolom</th><th class="p-3 text-left font-semibold text-gray-300">Panduan Pengisian</th></tr></thead><tbody><tr class="border-t border-gray-700"><td class="p-3 font-medium text-gray-300">Nama Diklat</td><td class="p-3 text-gray-400">Isi sesuai judul pada sertifikat.</td></tr><tr class="border-t border-gray-700 bg-gray-900/20"><td class="p-3 font-medium text-gray-300">Bentuk</td><td class="p-3 text-gray-400">Pilih <strong>Klasikal</strong> atau <strong>Non-Klasikal</strong>.</td></tr><tr class="border-t border-gray-700"><td class="p-3 font-medium text-gray-300">Kategori</td><td class="p-3 text-gray-400">Pilih yang paling sesuai: Pelatihan, Seminar, Workshop, Bimtek.</td></tr><tr class="border-t border-gray-700 bg-gray-900/20"><td class="p-3 font-medium text-gray-300">Durasi</td><td class="p-3 text-gray-400">Isi dalam satuan Jam Pelajaran (JP). Jika tidak ada, hitung dari rundown (1 JP = 45 menit).</td></tr><tr class="border-t border-gray-700"><td class="p-3 font-medium text-gray-300">Dokumen</td><td class="p-3 text-gray-400">Unggah file sertifikat. Jika JP tidak ada, unggah juga rundown acara.</td></tr></tbody></table></div>
-                                       <div class="mt-12"><header class="text-center mb-6"><h3 class="text-2xl md:text-3xl font-bold text-white">Simulasi Tampilan Input di SIMPEG</h3><p class="text-md text-gray-400">Berikut adalah contoh pengisian data pelatihan di SIMPEG.</p></header><div class="border border-gray-700 bg-gray-900 rounded-lg shadow-lg max-w-2xl mx-auto"><div class="flex justify-between items-center p-3 bg-blue-600 text-white rounded-t-lg"><h4 class="font-bold">Detail Diklat</h4><button class="text-xl font-bold">&times;</button></div><div class="p-6 space-y-3 text-sm"><p class="text-center font-semibold text-gray-300 mb-4">KURSUS/PELATIHAN</p><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Skala</p><p class="w-2/3 font-medium text-white">: Nasional</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Bentuk</p><p class="w-2/3 font-medium text-white">: Klasikal</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Kategori</p><p class="w-2/3 font-medium text-white">: Bimbingan teknis</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Jenis</p><p class="w-2/3 font-medium text-white">: Pembelajaran</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Nama Diklat</p><p class="w-2/3 font-medium text-white">: Training of Trainers Orientasi PPPK Tahun 2024</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Mulai</p><p class="w-2/3 font-medium text-white">: 27-10-2024</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Selesai</p><p class="w-2/3 font-medium text-white">: 01-11-2024</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Durasi</p><p class="w-2/3 font-medium text-white">: 39 jam</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Tempat</p><p class="w-2/3 font-medium text-white">: Pusdiklat BPS</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Nomor Sertifikat</p><p class="w-2/3 font-medium text-white">: 0033/TEKNIS/4929/BPS/A/2024</p></div><div class="flex items-center py-2"><p class="w-1/3 text-gray-400">Dokumen</p><div class="w-2/3 flex items-center space-x-2"><span>:</span><select class="border border-gray-600 rounded p-1 w-full bg-gray-700 text-white"></select><button class="px-3 py-1 bg-gray-600 border border-gray-500 rounded text-xs text-white">Tambah Dokumen</button><button class="px-3 py-1 bg-gray-600 border border-gray-500 rounded text-xs text-white">Upload</button></div></div></div><div class="flex justify-end p-3 bg-gray-700 rounded-b-lg"><button class="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L14.732 3.732z" /></svg>Ubah</button></div></div></div>
+                                        <div class="mt-12"><header class="text-center mb-6"><h3 class="text-2xl md:text-3xl font-bold text-white">Simulasi Tampilan Input di SIMPEG</h3><p class="text-md text-gray-400">Berikut adalah contoh pengisian data pelatihan di SIMPEG.</p></header><div class="border border-gray-700 bg-gray-900 rounded-lg shadow-lg max-w-2xl mx-auto"><div class="flex justify-between items-center p-3 bg-blue-600 text-white rounded-t-lg"><h4 class="font-bold">Detail Diklat</h4><button class="text-xl font-bold">&times;</button></div><div class="p-6 space-y-3 text-sm"><p class="text-center font-semibold text-gray-300 mb-4">KURSUS/PELATIHAN</p><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Skala</p><p class="w-2/3 font-medium text-white">: Nasional</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Bentuk</p><p class="w-2/3 font-medium text-white">: Klasikal</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Kategori</p><p class="w-2/3 font-medium text-white">: Bimbingan teknis</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Jenis</p><p class="w-2/3 font-medium text-white">: Pembelajaran</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Nama Diklat</p><p class="w-2/3 font-medium text-white">: Training of Trainers Orientasi PPPK Tahun 2024</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Mulai</p><p class="w-2/3 font-medium text-white">: 27-10-2024</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Selesai</p><p class="w-2/3 font-medium text-white">: 01-11-2024</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Durasi</p><p class="w-2/3 font-medium text-white">: 39 jam</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Tempat</p><p class="w-2/3 font-medium text-white">: Pusdiklat BPS</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Nomor Sertifikat</p><p class="w-2/3 font-medium text-white">: 0033/TEKNIS/4929/BPS/A/2024</p></div><div class="flex items-center py-2"><p class="w-1/3 text-gray-400">Dokumen</p><div class="w-2/3 flex items-center space-x-2"><span>:</span><select class="border border-gray-600 rounded p-1 w-full bg-gray-700 text-white"></select><button class="px-3 py-1 bg-gray-600 border border-gray-500 rounded text-xs text-white">Tambah Dokumen</button><button class="px-3 py-1 bg-gray-600 border border-gray-500 rounded text-xs text-white">Upload</button></div></div></div><div class="flex justify-end p-3 bg-gray-700 rounded-b-lg"><button class="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L14.732 3.732z" /></svg>Ubah</button></div></div></div>
                                 </div>
                             </section>
                         </div>
@@ -841,7 +844,7 @@
                                 <p class="text-slate-600 mt-1">Proses sama dengan Riwayat Pelatihan.</p>
                             </div>
                         </div>
-                           <div class="mt-8 border-t pt-6 grid md:grid-cols-2 gap-8">
+                            <div class="mt-8 border-t pt-6 grid md:grid-cols-2 gap-8">
                                 <div>
                                     <h4 class="font-bold text-lg text-slate-700 mb-4">1. Periksa Data Otomatis</h4>
                                     <ul class="list-disc list-inside space-y-2 text-slate-600">
@@ -883,7 +886,7 @@
                                 </a>
                             </nav>
                         </aside>
-                           <!-- Inner Content for Sertifikasi -->
+                            <!-- Inner Content for Sertifikasi -->
                         <div class="flex-1 p-6 lg:p-10 overflow-y-auto">
                             <!-- Panduan Umum Portofolio Sertifikasi -->
                             <section id="sertifikasi-panduan-umum" class="sertifikasi-content-section active">
@@ -906,35 +909,29 @@
                             <section id="sertifikasi-riwayat" class="sertifikasi-content-section">
                                 <div class="bg-gray-800 p-8 rounded-xl shadow-lg mb-8">
                                     <h3 class="text-2xl font-bold text-white mb-4">Riwayat Sertifikasi</h3>
-                                    <div class="info-box bg-blue-900/20 border-blue-500 text-blue-300">
+                                    <div class="info-box">
                                         <p class="font-bold">Informasi Penting!</p>
-                                        <!-- Updated narrative text -->
                                         <span class="block sm:inline ml-2">Data awal ditarik dari SIMPEG. Klik tombol <b class="text-yellow-400">Lengkapi</b> untuk mengisi data Relevansi dan Tipe Sertifikasi.</span>
                                     </div>
 
                                     <div class="flex flex-wrap items-center justify-between mb-4">
                                         <div class="filter-buttons flex flex-wrap mb-2 md:mb-0">
-                                            <button class="bg-gray-700 text-white px-4 py-2 rounded-lg text-sm active" data-filter="all">Semua <span id="count-all">0</span></button>
-                                            <button class="bg-gray-900 text-gray-400 px-4 py-2 rounded-lg text-sm ml-2" data-filter="disetujui">Disetujui <span id="count-disetujui">0</span></button>
-                                            <button class="bg-gray-900 text-gray-400 px-4 py-2 rounded-lg text-sm ml-2" data-filter="ditolak">Ditolak <span id="count-ditolak">0</span></button>
-                                            <button class="bg-gray-900 text-gray-400 px-4 py-2 rounded-lg text-sm ml-2" data-filter="diajukan">Diajukan <span id="count-diajukan">0</span></button>
+                                            <button class="active" data-filter="all">Semua <span id="count-all">0</span></button>
+                                            <button data-filter="disetujui">Disetujui <span id="count-disetujui">0</span></button>
+                                            <button data-filter="ditolak">Ditolak <span id="count-ditolak">0</span></button>
+                                            <button data-filter="diajukan">Diajukan <span id="count-diajukan">0</span></button>
                                         </div>
-                                        <input type="text" id="search-sertifikasi" placeholder="Search" class="search-input mb-2 md:mb-0 bg-gray-700 text-white border-gray-600">
-                                    </div>
-
-                                    <div class="flex justify-end mb-4 view-toggle-buttons">
-                                        <button id="toggle-table-view" class="active bg-blue-600 text-white hover:bg-blue-700">Tampilan Tabel</button>
-                                        <button id="toggle-card-view" class="bg-gray-700 text-gray-300 hover:bg-gray-600">Tampilan Kartu</button>
+                                        <input type="text" id="search-sertifikasi" placeholder="Cari sertifikasi..." class="search-input mb-2 md:mb-0">
                                     </div>
 
                                     <div id="table-view" class="table-container">
-                                        <table class="data-table bg-gray-800 text-gray-300" id="sertifikasi-table">
+                                        <table class="data-table" id="sertifikasi-table">
                                             <thead>
                                                 <tr>
                                                     <th>Nama Sertifikasi</th>
                                                     <th>Tingkat Sertifikasi</th>
                                                     <th>Relevansi</th>
-                                                    <th>Jenis Tingkat</th>
+                                                    <th>Tingkat Penyelenggara</th>
                                                     <th>Tipe Sertifikasi</th>
                                                     <th>Bukti Sertifikasi</th>
                                                     <th>Status</th>
@@ -942,19 +939,15 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <!-- Data sertifikasi akan dimuat di sini -->
+                                                <!-- Data sertifikasi akan dimuat di sini oleh JavaScript -->
                                             </tbody>
                                         </table>
-                                    </div>
-
-                                    <div id="card-view" class="card-container" style="display: none;">
-                                        <!-- Data sertifikasi dalam bentuk kartu akan dimuat di sini -->
                                     </div>
 
                                     <p id="no-data-message" class="text-center text-gray-500 mt-4" style="display: none;">Belum ada riwayat sertifikasi. Klik "Buat Riwayat Sertifikasi"</p>
 
                                     <div class="flex justify-end mt-6">
-                                        <button id="create-riwayat-button" class="button-primary bg-blue-600 hover:bg-blue-700 text-white">Buat Riwayat Sertifikasi</button>
+                                        <button id="create-riwayat-button" class="button-primary">Buat Riwayat Sertifikasi</button>
                                     </div>
                                 </div>
                             </section>
@@ -967,65 +960,63 @@
 
                                     <form id="sertifikasi-form" class="mt-6">
                                         <div class="form-group">
-                                            <label for="nama-sertifikasi" class="text-gray-300">Nama Sertifikasi<span class="text-red-500">*</span></label>
-                                            <input type="text" id="nama-sertifikasi" placeholder="Ketik nama sertifikasinya" required class="bg-gray-700 text-white border-gray-600">
+                                            <label for="nama-sertifikasi">Nama Sertifikasi<span class="text-red-500">*</span></label>
+                                            <input type="text" id="nama-sertifikasi" placeholder="Ketik nama sertifikasinya" required>
                                         </div>
 
                                         <div class="grid-cols-2">
                                             <div class="form-group">
-                                                <label for="tingkat-sertifikasi" class="text-gray-300">Tingkat Sertifikasi<span class="text-red-500">*</span></label>
-                                                <select id="tingkat-sertifikasi" required class="bg-gray-700 text-white border-gray-600">
+                                                <label for="tingkat-sertifikasi">Tingkat Sertifikasi<span class="text-red-500">*</span></label>
+                                                <select id="tingkat-sertifikasi" required>
                                                     <option value="">Pilih Tingkat</option>
                                                     <option value="Dasar">Dasar</option>
                                                     <option value="Menengah">Menengah</option>
                                                     <option value="Profesional">Profesional</option>
                                                 </select>
-                                                <!-- New element for narrative explanation -->
-                                                <p id="tingkat-sertifikasi-narrative" class="narrative-explanation text-gray-400"></p>
-                                                <p class="text-sm text-gray-400 mt-1">Silakan pilih tingkat sertifikasi.</p>
+                                                <p id="tingkat-sertifikasi-narrative" class="narrative-explanation"></p>
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="relevansi-sertifikasi" class="text-gray-300">Relevansi Sertifikasi<span class="text-red-500">*</span></label>
-                                                <select id="relevansi-sertifikasi" required class="bg-gray-700 text-white border-gray-600">
+                                                <label for="relevansi-sertifikasi">Relevansi Sertifikasi<span class="text-red-500">*</span></label>
+                                                <select id="relevansi-sertifikasi" required>
                                                     <option value="">Pilih Relevansi</option>
-                                                    <option value="Sangat Relevan">Sangat Relevan</option>
-                                                    <option value="Sebagian Relevan">Sebagian Relevan</option>
-                                                    <option value="Tidak Relevan">Tidak Relevan</option>
+                                                    <option value="Tidak Sesuai">1. Tidak Sesuai</option>
+                                                    <option value="Sebagian Kecil Relevan">2. Sebagian Kecil Relevan</option>
+                                                    <option value="Sebagian Besar Relevan">3. Sebagian Besar Relevan</option>
+                                                    <option value="Seluruhnya Relevan">4. Seluruhnya Relevan</option>
                                                 </select>
-                                                <p class="text-sm text-gray-400 mt-1">Silakan pilih relevansi sertifikasi dengan pekerjaan Anda.</p>
+                                                <p id="relevansi-sertifikasi-narrative" class="narrative-explanation"></p>
                                             </div>
                                         </div>
 
                                         <div class="grid-cols-2">
                                             <div class="form-group">
-                                                <label for="tingkat-sertifikasi-lainnya" class="text-gray-300">Tingkat Sertifikasi Lainnya<span class="text-red-500">*</span></label>
-                                                <select id="tingkat-sertifikasi-lainnya" required class="bg-gray-700 text-white border-gray-600">
-                                                    <option value="">Pilih Tingkat</option>
+                                                <label for="tingkat-penyelenggara">Tingkat Penyelenggara<span class="text-red-500">*</span></label>
+                                                <select id="tingkat-penyelenggara" required>
+                                                    <option value="">Pilih Tingkat Penyelenggara</option>
+                                                    <option value="Lokal">Lokal</option>
                                                     <option value="Nasional">Nasional</option>
                                                     <option value="Internasional">Internasional</option>
                                                 </select>
-                                                <p class="text-sm text-gray-400 mt-1">Silakan pilih tingkat sertifikasi (misal: Nasional, Internasional).</p>
+                                                <p class="text-sm text-gray-400 mt-1">Pilih tingkat penyelenggara sertifikasi.</p>
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="jenis-sertifikasi" class="text-gray-300">Jenis Sertifikasi<span class="text-red-500">*</span></label>
-                                                <!-- Updated placeholder text -->
-                                                <input type="text" id="jenis-sertifikasi" list="jenis-sertifikasi-options" placeholder="Ketik manual: PPK, Bendahara, PPSPM, PBJ, Lainnya" required class="bg-gray-700 text-white border-gray-600">
-                                                <!-- Datalist for suggestions -->
-                                                <datalist id="jenis-sertifikasi-options">
-                                                    <option value="PBJ">
-                                                    <option value="Bendahara">
-                                                    <option value="PPK">
-                                                    <option value="PPSPM">
-                                                    <option value="Lainnya">
+                                                <label for="tipe-sertifikasi">Tipe Sertifikasi<span class="text-red-500">*</span></label>
+                                                <input type="text" id="tipe-sertifikasi" list="tipe-sertifikasi-options" placeholder="Ketik: PBJ, Bendahara, PPK, dll." required>
+                                                <datalist id="tipe-sertifikasi-options">
+                                                    <option value="PBJ"></option>
+                                                    <option value="Bendahara"></option>
+                                                    <option value="PPK"></option>
+                                                    <option value="PPSPM"></option>
+                                                    <option value="Lainnya"></option>
                                                 </datalist>
                                             </div>
                                         </div>
 
                                         <div class="flex justify-end space-x-4 mt-6">
-                                            <button type="button" id="cancel-form-button" class="button-secondary bg-gray-600 hover:bg-gray-700 text-white">Batal</button>
-                                            <button type="submit" class="button-primary bg-blue-600 hover:bg-blue-700 text-white">Simpan Riwayat Sertifikasi</button>
+                                            <button type="button" id="cancel-form-button" class="button-secondary">Batal</button>
+                                            <button type="submit" class="button-primary">Simpan Riwayat Sertifikasi</button>
                                         </div>
                                     </form>
                                 </div>
@@ -1199,12 +1190,12 @@
             </div>
             <footer class="mt-16 py-8 border-t border-slate-200">
                 <div class="max-w-4xl mx-auto text-center text-slate-500">
-                       <p class="text-sm mb-4">SOP digital ini dibuat sebagai panduan pengisian portofolio di PARHATA.</p>
-                       <p class="text-sm">
-                           © 2024 Tim Layanan Pengembangan Kompetensi dan Hukum
-                           <br>
-                           BPS Provinsi Sumatera Utara
-                       </p>
+                        <p class="text-sm mb-4">SOP digital ini dibuat sebagai panduan pengisian portofolio di PARHATA.</p>
+                        <p class="text-sm">
+                            © 2024 Tim Layanan Pengembangan Kompetensi dan Hukum
+                            <br>
+                            BPS Provinsi Sumatera Utara
+                        </p>
                 </div>
             </footer>
         </main>
@@ -1245,9 +1236,10 @@
                     <label for="lengapi-relevansi" class="text-gray-300">Relevansi Sertifikasi<span class="text-red-500">*</span></label>
                     <select id="lengapi-relevansi" required class="bg-gray-700 border border-gray-600 text-white">
                         <option value="">Pilih Relevansi</option>
-                        <option value="Sangat Relevan">Sangat Relevan</option>
-                        <option value="Sebagian Relevan">Sebagian Relevan</option>
-                        <option value="Tidak Relevan">Tidak Relevan</option>
+                        <option value="Tidak Sesuai">1. Tidak Sesuai</option>
+                        <option value="Sebagian Kecil Relevan">2. Sebagian Kecil Relevan</option>
+                        <option value="Sebagian Besar Relevan">3. Sebagian Besar Relevan</option>
+                        <option value="Seluruhnya Relevan">4. Seluruhnya Relevan</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1267,7 +1259,7 @@
         // Inisialisasi Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, addDoc, updateDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Variabel global dari lingkungan Canvas
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -1278,141 +1270,124 @@
         let db;
         let auth;
         let userId = null;
+        let unsubscribeCertifications = null; // To store the unsubscribe function for the listener
 
-        // Data sertifikasi yang diambil dari Firestore
+        // State variables for the certification section
         let allCertifications = [];
-        // Data sertifikasi yang sedang ditampilkan (setelah filter/search)
         let displayedCertifications = [];
-        // Status filter saat ini ('all', 'disetujui', 'ditolak', 'diajukan')
         let currentFilterStatus = 'all';
-        // Teks pencarian saat ini
         let currentSearchText = '';
-        // Tampilan saat ini ('table' atau 'card')
-        let currentView = 'table';
 
-        // Narasi untuk tingkat sertifikasi
+        // Narratives for certification levels
         const tingkatSertifikasiNarratives = {
             "Dasar": "Sertifikasi pemula atau pengantar, biasanya tanpa prasyarat.",
             "Menengah": "Sertifikasi lanjutan yang mensyaratkan pengalaman atau pelatihan sebelumnya.",
             "Profesional": "Sertifikasi tingkat tinggi, seringkali diakui secara global dan memerlukan pengalaman profesional."
         };
 
-        // Inisialisasi Firebase dan autentikasi
+        const relevansiSertifikasiNarratives = {
+            "Tidak Sesuai": "Tidak mendukung tugas atau jabatan peserta.",
+            "Sebagian Kecil Relevan": "Sertifikasi sebagian kecil mendukung kebutuhan tugas atau jabatan.",
+            "Sebagian Besar Relevan": "Sertifikasi sebagian besar mendukung kebutuhan tugas atau jabatan.",
+            "Seluruhnya Relevan": "Sertifikasi seluruhnya mendukung kebutuhan tugas atau jabatan."
+        };
+
+        // Initialize Firebase and authentication
         const initFirebase = async () => {
             try {
+                if (Object.keys(firebaseConfig).length === 0) {
+                    console.warn("Firebase config is empty. App will not be initialized.");
+                    return;
+                }
                 app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
-
-                // Autentikasi pengguna
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
 
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         userId = user.uid;
                         console.log("User authenticated:", userId);
-                        // Mulai mendengarkan perubahan data setelah autentikasi
-                        setupRealtimeListener();
+                        setupRealtimeListener(); // Start listening for data changes after authentication
                     } else {
-                        console.log("No user is signed in.");
+                        console.log("No user is signed in. Attempting anonymous sign-in.");
                         userId = null;
-                        // Handle case where user signs out or authentication fails
+                        if (unsubscribeCertifications) unsubscribeCertifications(); // Stop listening if user signs out
+                        signInAnonymously(auth).catch(err => console.error("Anonymous sign-in failed:", err));
                     }
                 });
+                
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else if (!auth.currentUser) {
+                    await signInAnonymously(auth);
+                }
 
             } catch (error) {
                 console.error("Error initializing Firebase:", error);
             }
         };
 
-        // Fungsi untuk mengatur listener realtime dari Firestore
+        // Set up the realtime listener from Firestore
         const setupRealtimeListener = () => {
             if (!db || !userId) {
                 console.warn("Firestore or userId not available for listener setup.");
                 return;
             }
+            // Unsubscribe from any previous listener
+            if (unsubscribeCertifications) unsubscribeCertifications();
 
             const certificationsCollectionRef = collection(db, `artifacts/${appId}/users/${userId}/certifications`);
 
-            onSnapshot(certificationsCollectionRef, (snapshot) => {
+            unsubscribeCertifications = onSnapshot(certificationsCollectionRef, (snapshot) => {
                 const fetchedCertifications = [];
                 snapshot.forEach((doc) => {
                     fetchedCertifications.push({ id: doc.id, ...doc.data() });
                 });
-                allCertifications = fetchedCertifications; // Simpan semua data
-                filterAndSearchCertifications(); // Terapkan filter dan pencarian setelah data baru
+                allCertifications = fetchedCertifications; // Store all data
                 updateFilterCounts(allCertifications);
+                filterAndSearchCertifications(); // Apply filter and search after getting new data
             }, (error) => {
                 console.error("Error fetching real-time certifications:", error);
             });
         };
 
-        // Fungsi untuk merender data sertifikasi ke tabel atau kartu
+        // Render certification data to the table
         function renderCertifications(data) {
             const tableBody = document.querySelector('#sertifikasi-table tbody');
-            const cardsContainer = document.getElementById('card-view');
-            tableBody.innerHTML = ''; // Bersihkan tabel
-            cardsContainer.innerHTML = ''; // Bersihkan kartu
+            tableBody.innerHTML = ''; // Clear table
             const noDataMessage = document.getElementById('no-data-message');
 
             if (data.length === 0) {
                 noDataMessage.style.display = 'block';
                 document.getElementById('table-view').style.display = 'none';
-                document.getElementById('card-view').style.display = 'none';
                 return;
             } else {
-                noDataMessage.style.display = 'none';
+                noDataMessage.style.display = 'block'; // Should be 'block' to show the table
+                document.getElementById('table-view').style.display = ''; // Use empty string to revert to default display
             }
 
-            // Render ke tabel
+            // Render to table
             data.forEach(cert => {
                 const row = tableBody.insertRow();
                 row.innerHTML = `
-                    <td>${cert.namaSertifikasi}</td>
-                    <td>${cert.tingkatSertifikasi}</td>
+                    <td>${cert.namaSertifikasi || 'N/A'}</td>
+                    <td>${cert.tingkatSertifikasi || 'N/A'}</td>
                     <td>${cert.relevansi || 'N/A'}</td>
-                    <td>${cert.tingkatSertifikasiLainnya}</td>
+                    <td>${cert.tingkatPenyelenggara || 'N/A'}</td>
                     <td>${cert.tipeSertifikasi || 'N/A'}</td>
                     <td>
                         ${cert.buktiSertifikasiUrl ? `<a href="${cert.buktiSertifikasiUrl}" target="_blank" class="text-blue-400 hover:underline">Unduh</a>` : 'Tidak Ada'}
                     </td>
-                    <td><span class="status-badge ${cert.status.toLowerCase()}">${cert.status}</span></td>
+                    <td><span class="status-badge ${cert.status ? cert.status.toLowerCase() : ''}">${cert.status || 'N/A'}</span></td>
                     <td class="action-links">
-                        ${(cert.relevansi === undefined || cert.relevansi === '' || cert.tipeSertifikasi === undefined || cert.tipeSertifikasi === '') ?
-                            `<button class="lengapi-button" data-id="${cert.id}">Lengkapi</button>` : ''}
+                        ${(!cert.relevansi || !cert.tipeSertifikasi) ? `<button class="lengapi-button" data-id="${cert.id}">Lengkapi</button>` : ''}
                         <button class="hapus-button" data-id="${cert.id}">Hapus</button>
                     </td>
                 `;
             });
 
-            // Render ke kartu
-            data.forEach(cert => {
-                const card = document.createElement('div');
-                card.className = 'certification-card bg-gray-800 text-gray-200';
-                const narrative = tingkatSertifikasiNarratives[cert.tingkatSertifikasi] || 'Tidak ada narasi.';
-                card.innerHTML = `
-                    <h3 class="text-white">${cert.namaSertifikasi}</h3>
-                    <p><strong>Tingkat:</strong> ${cert.tingkatSertifikasi}</p>
-                    <p><strong>Relevansi:</strong> ${cert.relevansi || 'N/A'}</p>
-                    <p><strong>Jenis Tingkat:</strong> ${cert.tingkatSertifikasiLainnya}</p>
-                    <p><strong>Tipe:</strong> ${cert.tipeSertifikasi || 'N/A'}</p>
-                    <p><strong>Status:</strong> <span class="status-badge ${cert.status.toLowerCase()}">${cert.status}</span></p>
-                    <p class="level-narrative">${narrative}</p>
-                    <div class="card-actions">
-                        ${(cert.relevansi === undefined || cert.relevansi === '' || cert.tipeSertifikasi === undefined || cert.tipeSertifikasi === '') ?
-                            `<button class="button-primary button-small lengapi-button" data-id="${cert.id}">Lengkapi</button>` : ''}
-                        <button class="button-secondary button-small hapus-button" data-id="${cert.id}">Hapus</button>
-                        ${cert.buktiSertifikasiUrl ? `<a href="${cert.buktiSertifikasiUrl}" target="_blank" class="button-primary button-small">Unduh Bukti</a>` : ''}
-                    </div>
-                `;
-                cardsContainer.appendChild(card);
-            });
 
-            // Tambahkan event listener untuk tombol "Lengkapi" dan "Hapus" di tabel dan kartu
+            // Add event listeners for "Lengkapi" and "Hapus" buttons
             document.querySelectorAll('.lengapi-button').forEach(button => {
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -1428,24 +1403,15 @@
                     showConfirmationModal("Apakah Anda yakin ingin menghapus riwayat sertifikasi ini?", () => deleteCertification(certId));
                 });
             });
-
-            // Atur tampilan berdasarkan currentView
-            if (currentView === 'table') {
-                document.getElementById('table-view').style.display = 'block';
-                document.getElementById('card-view').style.display = 'none';
-            } else {
-                document.getElementById('table-view').style.display = 'none';
-                document.getElementById('card-view').style.display = 'grid'; // Use grid for cards
-            }
         }
 
-        // Fungsi untuk memperbarui jumlah di tombol filter
+        // Update counts on filter buttons
         function updateFilterCounts(data) {
             const counts = {
                 all: data.length,
-                disetujui: data.filter(cert => cert.status.toLowerCase() === 'disetujui').length,
-                ditolak: data.filter(cert => cert.status.toLowerCase() === 'ditolak').length,
-                diajukan: data.filter(cert => cert.status.toLowerCase() === 'diajukan').length,
+                disetujui: data.filter(cert => cert.status && cert.status.toLowerCase() === 'disetujui').length,
+                ditolak: data.filter(cert => cert.status && cert.status.toLowerCase() === 'ditolak').length,
+                diajukan: data.filter(cert => cert.status && cert.status.toLowerCase() === 'diajukan').length,
             };
 
             document.getElementById('count-all').textContent = counts.all;
@@ -1454,26 +1420,24 @@
             document.getElementById('count-diajukan').textContent = counts.diajukan;
         }
 
-        // Fungsi untuk memfilter dan mencari data sertifikasi
+        // Filter and search certification data
         function filterAndSearchCertifications() {
             let filtered = allCertifications;
 
-            // Filter berdasarkan status
             if (currentFilterStatus !== 'all') {
-                filtered = filtered.filter(cert => cert.status.toLowerCase() === currentFilterStatus);
+                filtered = filtered.filter(cert => cert.status && cert.status.toLowerCase() === currentFilterStatus);
             }
 
-            // Cari berdasarkan nama sertifikasi
             if (currentSearchText) {
                 filtered = filtered.filter(cert =>
-                    cert.namaSertifikasi.toLowerCase().includes(currentSearchText.toLowerCase())
+                    cert.namaSertifikasi && cert.namaSertifikasi.toLowerCase().includes(currentSearchText.toLowerCase())
                 );
             }
             displayedCertifications = filtered;
             renderCertifications(displayedCertifications);
         }
 
-        // Fungsi untuk menyimpan sertifikasi baru ke Firestore
+        // Save a new certification to Firestore
         async function saveCertification(certData) {
             if (!db || !userId) {
                 console.error("Firestore or userId not initialized.");
@@ -1481,16 +1445,17 @@
             }
             try {
                 const docRef = await addDoc(collection(db, `artifacts/${appId}/users/${userId}/certifications`), certData);
-                console.log("Dokumen sertifikasi berhasil ditulis dengan ID: ", docRef.id);
-                // After saving, switch to the certification history view
-                switchSertifikasiView('#sertifikasi-riwayat'); // Switch to Riwayat Sertifikasi
-                document.getElementById('sertifikasi-form').reset(); // Reset form
+                console.log("Certification document written with ID: ", docRef.id);
+                switchSertifikasiView('#sertifikasi-riwayat');
+                document.getElementById('sertifikasi-form').reset();
+                document.getElementById('tingkat-sertifikasi-narrative').textContent = '';
+                document.getElementById('relevansi-sertifikasi-narrative').textContent = '';
             } catch (e) {
-                console.error("Error menambahkan dokumen sertifikasi: ", e);
+                console.error("Error adding certification document: ", e);
             }
         }
 
-        // Fungsi untuk memperbarui sertifikasi di Firestore
+        // Update a certification in Firestore
         async function updateCertification(id, updateData) {
             if (!db || !userId) {
                 console.error("Firestore or userId not initialized.");
@@ -1499,13 +1464,13 @@
             try {
                 const certRef = doc(db, `artifacts/${appId}/users/${userId}/certifications`, id);
                 await updateDoc(certRef, updateData);
-                console.log("Dokumen sertifikasi berhasil diperbarui.");
+                console.log("Certification document successfully updated.");
             } catch (e) {
-                console.error("Error memperbarui dokumen sertifikasi: ", e);
+                console.error("Error updating certification document: ", e);
             }
         }
 
-        // Fungsi untuk menghapus sertifikasi dari Firestore
+        // Delete a certification from Firestore
         async function deleteCertification(id) {
             if (!db || !userId) {
                 console.error("Firestore or userId not initialized.");
@@ -1513,13 +1478,13 @@
             }
             try {
                 await deleteDoc(doc(db, `artifacts/${appId}/users/${userId}/certifications`, id));
-                console.log("Dokumen sertifikasi berhasil dihapus.");
+                console.log("Certification document successfully deleted.");
             } catch (e) {
-                console.error("Error menghapus dokumen sertifikasi: ", e);
+                console.error("Error deleting certification document: ", e);
             }
         }
 
-        // Modal Logic for Lengkapi
+        // Modal Logic for "Lengkapi"
         const lengapiModal = document.getElementById('lengapi-modal');
         const closeLengapiModalButton = document.getElementById('close-lengapi-modal');
         const cancelLengapiModalButton = document.getElementById('cancel-lengapi-modal');
@@ -1535,19 +1500,13 @@
             lengapiModal.style.display = 'flex';
         }
 
-        if(closeLengapiModalButton) closeLengapiModalButton.onclick = function() {
-            lengapiModal.style.display = 'none';
-        }
-
-        if(cancelLengapiModalButton) cancelLengapiModalButton.onclick = function() {
-            lengapiModal.style.display = 'none';
-        }
-
-        window.onclick = function(event) {
+        if(closeLengapiModalButton) closeLengapiModalButton.onclick = () => lengapiModal.style.display = 'none';
+        if(cancelLengapiModalButton) cancelLengapiModalButton.onclick = () => lengapiModal.style.display = 'none';
+        window.onclick = (event) => {
             if (event.target == lengapiModal) {
                 lengapiModal.style.display = 'none';
             }
-        }
+        };
 
         if(lengapiForm) {
             lengapiForm.addEventListener('submit', async (e) => {
@@ -1564,7 +1523,7 @@
             });
         }
 
-        // Function to show a custom confirmation modal
+        // Custom confirmation modal
         function showConfirmationModal(message, onConfirm) {
             const modal = document.createElement('div');
             modal.className = 'modal';
@@ -1573,8 +1532,8 @@
                     <span class="close-button">&times;</span>
                     <p class="text-lg mb-4">${message}</p>
                     <div class="flex justify-end space-x-4">
-                        <button class="button-secondary bg-gray-600 hover:bg-gray-700 text-white" id="confirm-cancel">Batal</button>
-                        <button class="button-primary bg-blue-600 hover:bg-blue-700 text-white" id="confirm-ok">OK</button>
+                        <button class="button-secondary" id="confirm-cancel">Batal</button>
+                        <button class="button-primary bg-red-600 hover:bg-red-700" id="confirm-ok">OK</button>
                     </div>
                 </div>
             `;
@@ -1587,27 +1546,21 @@
                 onConfirm();
                 modal.remove();
             };
-
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.remove();
-                }
-            }
+            window.onclick = (event) => {
+                if (event.target == modal) modal.remove();
+            };
         }
 
 
         document.addEventListener('DOMContentLoaded', function () {
-            initFirebase(); // Inisialisasi Firebase saat DOM dimuat
+            initFirebase(); // Initialize Firebase on DOM load
 
             // --- Main Sidebar Navigation Logic ---
             const mainNavLinks = document.querySelectorAll('#sidebar-nav .sidebar-link');
             const mainContentPanels = document.querySelectorAll('#content-area > .content-panel');
 
-            // Fungsi untuk menampilkan konten berdasarkan menu yang dipilih (diperbarui untuk main sidebar)
             function showContent(targetId) {
-                mainContentPanels.forEach(panel => {
-                    panel.classList.remove('active');
-                });
+                mainContentPanels.forEach(panel => panel.classList.remove('active'));
                 document.getElementById(targetId).classList.add('active');
 
                 mainNavLinks.forEach(nav => {
@@ -1616,25 +1569,17 @@
                         nav.classList.add('active');
                     }
                 });
-                // If the target is 'panel-sertifikasi', ensure initial view is table and refresh data
-                if (targetId === 'panel-sertifikasi') {
-                    // Default to showing the 'Panduan Umum' section within 'panel-sertifikasi'
-                    switchSertifikasiView('#sertifikasi-panduan-umum');
-                }
-                // If the target is 'panel-kinerja', ensure initial view is Panduan Umum
-                if (targetId === 'panel-kinerja') {
-                    switchKinerjaView('#kinerja-panduan-umum');
-                }
-                // If the target is 'panel-pelatihan', ensure initial view is Kategori Pelatihan
-                if (targetId === 'panel-pelatihan') {
-                    switchPelatihanView('#pelatihan-kategori');
-                }
+                
+                if (targetId === 'panel-sertifikasi') switchSertifikasiView('#sertifikasi-panduan-umum');
+                if (targetId === 'panel-kinerja') switchKinerjaView('#kinerja-panduan-umum');
+                if (targetId === 'panel-pelatihan') switchPelatihanView('#pelatihan-kategori');
+                if (targetId === 'panel-jabatan') switchJabatanView('#jabatan-panduan-umum');
             }
 
             mainNavLinks.forEach(link => {
-                link.addEventListener('click', function (e) {
+                link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const targetId = this.getAttribute('data-target');
+                    const targetId = link.getAttribute('data-target');
                     showContent(targetId);
                 });
             });
@@ -1656,19 +1601,15 @@
             };
 
             const closeInfoModal = () => {
-                   if(infoModalGeneral) {
+                if(infoModalGeneral) {
                     infoModalGeneral.classList.add('opacity-0');
                     infoModalGeneral.querySelector('.info-modal-content').classList.add('scale-95');
-                    setTimeout(() => {
-                        infoModalGeneral.style.visibility = 'hidden';
-                    }, 300);
+                    setTimeout(() => infoModalGeneral.style.visibility = 'hidden', 300);
                 }
             };
             
             document.querySelectorAll('.info-trigger').forEach(trigger => {
-                trigger.addEventListener('click', () => {
-                    openInfoModal(trigger.dataset.title, trigger.dataset.info);
-                });
+                trigger.addEventListener('click', () => openInfoModal(trigger.dataset.title, trigger.dataset.info));
             });
 
             if(infoModalGeneralCloseButton) infoModalGeneralCloseButton.addEventListener('click', closeInfoModal);
@@ -1685,40 +1626,33 @@
             function switchJabatanView(targetId) {
                 jabatanContentSections.forEach(section => {
                     section.classList.remove('active');
-                    if ('#' + section.id === targetId) {
-                        section.classList.add('active');
-                    }
+                    if ('#' + section.id === targetId) section.classList.add('active');
                 });
                 jabatanSidebarLinks.forEach(link => {
                     link.classList.remove('jabatan-sidebar-active');
-                    if (link.getAttribute('href') === targetId) {
-                        link.classList.add('jabatan-sidebar-active');
-                    }
+                    if (link.getAttribute('href') === targetId) link.classList.add('jabatan-sidebar-active');
                 });
             }
 
             jabatanSidebarLinks.forEach(link => {
-                link.addEventListener('click', function (e) {
+                link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    switchJabatanView(targetId);
+                    switchJabatanView(link.getAttribute('href'));
                 });
             });
 
             jabatanLengkapiButtons.forEach(button => {
-                button.addEventListener('click', function (e) {
+                button.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const row = this.closest('tr');
+                    const row = button.closest('tr');
                     const jabatan = row.cells[0].textContent;
-                    if(jabatanEditJabatanInput) {
-                        jabatanEditJabatanInput.value = jabatan;
-                    }
+                    if(jabatanEditJabatanInput) jabatanEditJabatanInput.value = jabatan;
                     switchJabatanView('#jabatan-simulasi');
                 });
             });
 
             if(jabatanCancelEditButton) {
-                jabatanCancelEditButton.addEventListener('click', function(e) {
+                jabatanCancelEditButton.addEventListener('click', (e) => {
                     e.preventDefault();
                     switchJabatanView('#jabatan-riwayat-jabatan');
                 });
@@ -1732,23 +1666,18 @@
             function switchPelatihanView(targetId) {
                 pelatihanContentSections.forEach(section => {
                     section.classList.remove('active');
-                    if ('#' + section.id === targetId) {
-                        section.classList.add('active');
-                    }
+                    if ('#' + section.id === targetId) section.classList.add('active');
                 });
                 pelatihanSidebarLinks.forEach(link => {
                     link.classList.remove('pelatihan-sidebar-active');
-                    if (link.getAttribute('href') === targetId) {
-                        link.classList.add('pelatihan-sidebar-active');
-                    }
+                    if (link.getAttribute('href') === targetId) link.classList.add('pelatihan-sidebar-active');
                 });
             }
 
             pelatihanSidebarLinks.forEach(link => {
-                link.addEventListener('click', function (e) {
+                link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    switchPelatihanView(targetId);
+                    switchPelatihanView(link.getAttribute('href'));
                 });
             });
 
@@ -1760,23 +1689,18 @@
             function switchKinerjaView(targetId) {
                 kinerjaContentSections.forEach(section => {
                     section.classList.remove('active');
-                    if ('#' + section.id === targetId) {
-                        section.classList.add('active');
-                    }
+                    if ('#' + section.id === targetId) section.classList.add('active');
                 });
                 kinerjaSidebarLinks.forEach(link => {
                     link.classList.remove('kinerja-sidebar-active');
-                    if (link.getAttribute('href') === targetId) {
-                        link.classList.add('kinerja-sidebar-active');
-                    }
+                    if (link.getAttribute('href') === targetId) link.classList.add('kinerja-sidebar-active');
                 });
             }
 
             kinerjaSidebarLinks.forEach(link => {
-                link.addEventListener('click', function (e) {
+                link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    switchKinerjaView(targetId);
+                    switchKinerjaView(link.getAttribute('href'));
                 });
             });
 
@@ -1787,12 +1711,12 @@
                 { icon: '📂', title: 'Dokumentasi Proyek/Program', details: '<ul><li class="mb-2"><b>Upload Bukti:</b> Semua dokumen digabung kedalam satu file PDF</li><li class="mb-2"><b>Dokumentasi Kegiatan (Foto/Video):</b> KAK Program Kerja/ Notulensi dan daftar hadir/ Screenshoot pengembangan aplikasi/website</li><li><b>Surat Keputusan:</b> SK Ketua Tim Kerja/ surat tugas.</li></ul>' }
             ];
 
-            const evidenceContainer = document.getElementById('evidence-cards');
+            const evidenceContainer = document.querySelector('#panel-kinerja #evidence-cards');
             if(evidenceContainer) {
                 evidenceContainer.innerHTML = ''; 
                 evidenceData.forEach(item => {
                     const card = document.createElement('div');
-                    card.className = 'card bg-gray-700 p-6 rounded-xl shadow-lg cursor-pointer text-gray-200'; /* Updated styling */
+                    card.className = 'card bg-gray-700 p-6 rounded-xl shadow-lg cursor-pointer text-gray-200';
                     card.innerHTML = `
                         <div class="flex items-center space-x-4">
                             <span class="text-3xl">${item.icon}</span>
@@ -1815,7 +1739,6 @@
                 });
             }
 
-            // Data for the new dropdown in "Panduan Peran Khusus"
             const specialGuidanceDropdownData = {
                 ketua_tim: { title: 'Pengelola Tim (Ketua Tim)', content: '<p class="font-semibold">Aturan Pengisian:</p><ul class="list-disc list-inside space-y-2 mt-2"><li><b>Nama Pencapaian:</b> Contoh: "Ketua Tim Podcast \'PASKALIBAH\'".</li><li><b>Pencapaian Kinerja:</b> Disesuaikan dengan SKP dan PPK tahun bertugas.</li><li><b>Penghargaan:</b> Diisi jika ada penghargaan terkait.</li><li><b>Dampak Kontribusi:</b> Ditetapkan sebagai "Dampak Sedang".</li><li><b>Bukti Pencapaian:</b> Wajib melampirkan SK penunjukan ketua tim dan sertifikat penghargaan (jika ada).</li></ul>' },
                 anggota_tim: { title: 'Anggota Tim', content: '<p class="font-semibold">Aturan Pengisian:</p><ul class="list-disc list-inside space-y-2 mt-2"><li><b>Nama Pencapaian:</b> Contoh: "Anggota Tim Podcast \'PASKALIBAH\'".</li><li><b>Pencapaian Kinerja:</b> Disesuaikan dengan SKP dan PPK tahun bertugas.</li><li><b>Penghargaan:</b> Diisi jika ada penghargaan terkait.</li><li><b>Dampak Kontribusi:</b> Ditetapkan sebagai "Dampak Rendah".</li><li><b>Bukti Pencapaian:</b> Wajib melampirkan SK penunjukan anggota tim dan sertifikat penghargaan (jika ada).</li></ul>' },
@@ -1835,10 +1758,10 @@
                             <h4 class="font-bold text-lg text-white mb-2">${data.title}</h4>
                             ${data.content}
                         `;
-                        roleExplanationBox.style.display = 'block'; // Show the box
+                        roleExplanationBox.style.display = 'block';
                     } else {
                         roleExplanationBox.innerHTML = '';
-                        roleExplanationBox.style.display = 'none'; // Hide the box
+                        roleExplanationBox.style.display = 'none';
                     }
                 });
             }
@@ -1846,7 +1769,7 @@
 
             const simulationData = {
                 ketua_tim: { nama: "Ketua Tim Podcast 'PASKALIBAH'", kinerja_option: "diatas_ekspektasi", penghargaan_option: "internal_lokal", dampak_option: "sedang" },
-                anggota_tim: { nama: "Anggota Tim Podcast 'PASKALIBAH'", kinerja_option: "sesuai_ekspektasi", penghargaan_option: "tidak_ada", dampak_option: "rendah" }, /* New data */
+                anggota_tim: { nama: "Anggota Tim Podcast 'PASKALIBAH'", kinerja_option: "sesuai_ekspektasi", penghargaan_option: "tidak_ada", dampak_option: "rendah" },
                 bendahara: { nama: "Bendahara", kinerja_option: "sesuai_ekspektasi", penghargaan_option: "tidak_ada", dampak_option: "rendah" },
                 plt: { nama: "Plt. Kepala Seksi Statistik Distribusi", kinerja_option: "sesuai_ekspektasi", penghargaan_option: "tidak_ada", dampak_option: "rendah" }
             };
@@ -1915,42 +1838,30 @@
             function switchSertifikasiView(targetId) {
                 sertifikasiContentSections.forEach(section => {
                     section.classList.remove('active');
-                    if ('#' + section.id === targetId) {
-                        section.classList.add('active');
-                    }
+                    if ('#' + section.id === targetId) section.classList.add('active');
                 });
                 sertifikasiSidebarLinks.forEach(link => {
                     link.classList.remove('sertifikasi-sidebar-active');
-                    if (link.getAttribute('href') === targetId) {
-                        link.classList.add('sertifikasi-sidebar-active');
-                    }
+                    if (link.getAttribute('href') === targetId) link.classList.add('sertifikasi-sidebar-active');
                 });
-                // If switching to riwayat, ensure table view is active
+                
                 if (targetId === '#sertifikasi-riwayat') {
-                    currentView = 'table';
-                    document.getElementById('toggle-table-view').classList.add('active');
-                    document.getElementById('toggle-card-view').classList.remove('active');
-                    filterAndSearchCertifications(); // Re-render certifications
+                    filterAndSearchCertifications();
                 }
             }
 
             sertifikasiSidebarLinks.forEach(link => {
-                link.addEventListener('click', function (e) {
+                link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    switchSertifikasiView(targetId);
+                    switchSertifikasiView(link.getAttribute('href'));
                 });
             });
 
-            // Tombol "Buat Riwayat Sertifikasi"
             const createRiwayatButton = document.getElementById('create-riwayat-button');
             if (createRiwayatButton) {
-                createRiwayatButton.addEventListener('click', () => {
-                    switchSertifikasiView('#sertifikasi-simulasi'); // Navigate to the form section
-                });
+                createRiwayatButton.addEventListener('click', () => switchSertifikasiView('#sertifikasi-simulasi'));
             }
 
-            // Form Pengisian Sertifikasi
             const sertifikasiForm = document.getElementById('sertifikasi-form');
             if (sertifikasiForm) {
                 sertifikasiForm.addEventListener('submit', (e) => {
@@ -1959,46 +1870,50 @@
                         namaSertifikasi: document.getElementById('nama-sertifikasi').value,
                         tingkatSertifikasi: document.getElementById('tingkat-sertifikasi').value,
                         relevansi: document.getElementById('relevansi-sertifikasi').value,
-                        tingkatSertifikasiLainnya: document.getElementById('tingkat-sertifikasi-lainnya').value,
-                        jenisSertifikasi: document.getElementById('jenis-sertifikasi').value,
-                        buktiSertifikasiUrl: '', // Placeholder for actual upload
-                        status: 'Diajukan' // Default status
+                        tingkatPenyelenggara: document.getElementById('tingkat-penyelenggara').value,
+                        tipeSertifikasi: document.getElementById('tipe-sertifikasi').value,
+                        buktiSertifikasiUrl: '', // Placeholder
+                        status: 'Diajukan'
                     };
                     saveCertification(newCert);
                 });
             }
 
-            // Tombol Batal pada form pengisian
             const cancelFormButton = document.getElementById('cancel-form-button');
             if (cancelFormButton) {
                 cancelFormButton.addEventListener('click', () => {
-                    document.getElementById('sertifikasi-form').reset();
-                    switchSertifikasiView('#sertifikasi-riwayat'); // Return to riwayat view
-                    document.getElementById('tingkat-sertifikasi-narrative').textContent = ''; // Clear narrative on cancel
+                    sertifikasiForm.reset();
+                    switchSertifikasiView('#sertifikasi-riwayat');
+                    document.getElementById('tingkat-sertifikasi-narrative').textContent = '';
+                    document.getElementById('relevansi-sertifikasi-narrative').textContent = '';
                 });
             }
 
-            // Event listener for Tingkat Sertifikasi dropdown
             const tingkatSertifikasiSelect = document.getElementById('tingkat-sertifikasi');
             if (tingkatSertifikasiSelect) {
                 tingkatSertifikasiSelect.addEventListener('change', (e) => {
                     const selectedLevel = e.target.value;
-                    const narrativeElement = document.getElementById('tingkat-sertifikasi-narrative');
-                    narrativeElement.textContent = tingkatSertifikasiNarratives[selectedLevel] || '';
+                    document.getElementById('tingkat-sertifikasi-narrative').textContent = tingkatSertifikasiNarratives[selectedLevel] || '';
                 });
             }
 
-            // Filter buttons
+            const relevansiSertifikasiSelect = document.getElementById('relevansi-sertifikasi');
+            if (relevansiSertifikasiSelect) {
+                relevansiSertifikasiSelect.addEventListener('change', (e) => {
+                    const selectedLevel = e.target.value;
+                    document.getElementById('relevansi-sertifikasi-narrative').textContent = relevansiSertifikasiNarratives[selectedLevel] || '';
+                });
+            }
+
             document.querySelectorAll('.filter-buttons button').forEach(button => {
                 button.addEventListener('click', (e) => {
                     document.querySelectorAll('.filter-buttons button').forEach(btn => btn.classList.remove('active'));
-                    e.target.classList.add('active');
-                    currentFilterStatus = e.target.dataset.filter;
+                    e.currentTarget.classList.add('active');
+                    currentFilterStatus = e.currentTarget.dataset.filter;
                     filterAndSearchCertifications();
                 });
             });
 
-            // Search input
             const searchSertifikasiInput = document.getElementById('search-sertifikasi');
             if (searchSertifikasiInput) {
                 searchSertifikasiInput.addEventListener('keyup', (e) => {
@@ -2007,27 +1922,6 @@
                 });
             }
 
-            // View toggle buttons
-            const toggleTableView = document.getElementById('toggle-table-view');
-            const toggleCardView = document.getElementById('toggle-card-view');
-
-            if (toggleTableView) {
-                toggleTableView.addEventListener('click', () => {
-                    currentView = 'table';
-                    toggleTableView.classList.add('active');
-                    toggleCardView.classList.remove('active');
-                    renderCertifications(displayedCertifications);
-                });
-            }
-
-            if (toggleCardView) {
-                toggleCardView.addEventListener('click', () => {
-                    currentView = 'card';
-                    toggleCardView.classList.add('active');
-                    toggleTableView.classList.remove('active');
-                    renderCertifications(displayedCertifications);
-                });
-            }
         });
     </script>
 </body>
