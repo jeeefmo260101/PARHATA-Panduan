@@ -1,580 +1,785 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panduan Interaktif SOP PARHATA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        /* General and Sidebar Styles */
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .content-title {
-            font-family: 'Roboto Slab', serif;
-        }
-        .sidebar-link {
-            transition: all 0.2s ease-in-out;
-            border-left: 4px solid transparent;
-        }
-        .sidebar-link.active {
-            border-left-color: #3b82f6; /* blue-500 */
-            background-color: #1e293b; /* slate-800 */
-            color: #f8fafc; /* slate-50 */
-        }
-        .sidebar-link:hover {
-            background-color: #334155; /* slate-700 */
-        }
-        .content-panel {
-            display: none;
-        }
-        .content-panel.active {
-            display: block;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
+import React, { useState, useEffect } from 'react';
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore, collection, query, onSnapshot, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+
+// Main App component
+const App = () => {
+    // State to manage the current active menu
+    const [activeMenu, setActiveMenu] = useState('panduan-umum');
+    // State to store the list of certifications
+    const [certifications, setCertifications] = useState([]);
+    // State to manage the visibility of the certification name table
+    const [showCertificationNameTable, setShowCertificationNameTable] = useState(false);
+    // State to store the selected certification name
+    const [selectedCertificationName, setSelectedCertificationName] = useState('');
+    // State to store the list of available certification names (hardcoded for now)
+    const [availableCertifications, setAvailableCertifications] = useState([]);
+    // State for form fields
+    const [formNamaSertifikasi, setFormNamaSertifikasi] = useState('');
+    const [formTingkatSertifikasi, setFormTingkatSertifikasi] = useState('');
+    const [formRelevansiSertifikasi, setFormRelevansiSertifikasi] = useState('');
+    const [formTingkatSertifikasiLainnya, setFormTingkatSertifikasiLainnya] = useState('');
+    const [formJenisSertifikasi, setFormJenisSertifikasi] = useState('');
+    // State to store the certification being edited
+    const [editingCertification, setEditingCertification] = useState(null);
+
+    // State to manage Firebase instances
+    const [db, setDb] = useState(null);
+    const [auth, setAuth] = useState(null);
+    const [userId, setUserId] = useState(null);
+    const [isAuthReady, setIsAuthReady] = useState(false);
+
+    // State for managing pop-up visibility on click for Nama Sertifikasi
+    const [activeCertPopupIndex, setActiveCertPopupIndex] = useState(null);
+
+    // State for Jenis Sertifikasi suggestions
+    const [filteredJenisSuggestions, setFilteredJenisSuggestions] = useState([]);
+    const [showJenisSuggestions, setShowJenisSuggestions] = useState(false);
+    const jenisSertifikasiOptions = ["PBJ", "Bendahara", "PPK", "PPSPM", "Lainnya"];
+
+    // State for connection status to Firestore
+    const [connectionStatus, setConnectionStatus] = useState('connected'); // 'connected', 'disconnected', 'error'
+
+    // State for Tingkat Sertifikasi explanation card
+    const [selectedTingkatExplanation, setSelectedTingkatExplanation] = useState('');
+
+    // Explanations for Tingkat Sertifikasi
+    const tingkatExplanations = {
+        "Dasar": "Sertifikasi pemula atau pengantar, biasanya tanpa prasyarat.",
+        "Menengah": "Sertifikasi lanjutan yang mensyaratkan pengalaman atau pelatihan sebelumnya.",
+        "Profesional": "Sertifikasi tingkat tinggi, seringkali diakui secara global dan memerlukan pengalaman profesional."
+    };
+
+    // Initialize Firebase and set up authentication listener
+    useEffect(() => {
+        const initializeFirebase = async () => {
+            try {
+                // Firebase configuration and app ID are provided globally
+                const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+                // Initialize Firebase app
+                const app = initializeApp(firebaseConfig);
+                const firestoreDb = getFirestore(app);
+                const firebaseAuth = getAuth(app);
+
+                setDb(firestoreDb);
+                setAuth(firebaseAuth);
+
+                // Sign in with custom token or anonymously
+                if (typeof __initial_auth_token !== 'undefined') {
+                    await signInWithCustomToken(firebaseAuth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(firebaseAuth);
+                }
+
+                // Listen for auth state changes
+                onAuthStateChanged(firebaseAuth, (user) => {
+                    if (user) {
+                        setUserId(user.uid);
+                    } else {
+                        setUserId(crypto.randomUUID()); // Anonymous user
+                    }
+                    setIsAuthReady(true);
+                });
+
+            } catch (error) {
+                console.error("Error initializing Firebase:", error);
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+        };
+
+        initializeFirebase();
+    }, []);
+
+    // Fetch certifications from Firestore when auth is ready
+    useEffect(() => {
+        if (db && userId && isAuthReady) {
+            const certificationsCollectionRef = collection(db, `artifacts/${__app_id}/users/${userId}/certifications`);
+            const q = query(certificationsCollectionRef);
+
+            const unsubscribe = onSnapshot(q, (snapshot) => {
+                const certs = [];
+                snapshot.forEach((doc) => {
+                    certs.push({ id: doc.id, ...doc.data() });
+                });
+                setCertifications(certs);
+                setConnectionStatus('connected'); // If snapshot is successful, connection is good
+            }, (error) => {
+                console.error("Error fetching certifications:", error);
+                if (error.code === 'unavailable') {
+                    setConnectionStatus('disconnected');
+                } else {
+                    setConnectionStatus('error'); // Generic error
+                }
+            });
+
+            return () => unsubscribe(); // Cleanup listener on unmount
+        }
+    }, [db, userId, isAuthReady]);
+
+    // Initialize certification names (hardcoded for now with descriptions)
+    useEffect(() => {
+        setAvailableCertifications([
+            { name: "Microsoft Office Specialist (MOS)", description: "Sertifikasi keahlian dasar dalam penggunaan aplikasi Microsoft Office." },
+            { name: "Sertifikat Digital Marketing Google", description: "Sertifikasi yang menunjukkan pemahaman dasar pemasaran digital dari Google." },
+            { name: "Sertifikasi Dasar Pengadaan (LKPP)", description: "Sertifikasi pemula dalam proses pengadaan barang/jasa pemerintah." },
+            { name: "Sertifikasi PBJ Level Menengah (LKPP)", description: "Sertifikasi lanjutan dalam pengadaan barang/jasa pemerintah." },
+            { name: "PMP (Project Management Professional)", description: "Sertifikasi profesional yang diakui secara global dalam manajemen proyek." },
+            { name: "CPA (Certified Public Accountant)", description: "Sertifikasi akuntan publik terkemuka." },
+            { name: "CISA (Certified Information Systems Auditor)", description: "Sertifikasi untuk profesional audit sistem informasi." },
+            { name: "TOGAF (The Open Group Architecture Framework)", description: "Sertifikasi dalam kerangka kerja arsitektur perusahaan." },
+            { name: "Sertifikasi Auditor Profesional (BPK, BPKP, IIA)", description: "Sertifikasi untuk auditor profesional di sektor publik maupun swasta." },
+            { name: "Sertifikasi Nasional Berbasis SKKNI Level 5 ke atas", description: "Sertifikasi kompetensi kerja yang diakui secara nasional berdasarkan Standar Kompetensi Kerja Nasional Indonesia." }
+        ]);
+    }, []);
+
+    // Effect to handle clicks outside popups/suggestions to close them
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            // Close Nama Sertifikasi popups if click is outside their icons and popups
+            if (activeCertPopupIndex !== null && !event.target.closest('.info-icon-cert') && !event.target.closest('.info-popup-cert')) {
+                setActiveCertPopupIndex(null);
+            }
+            // Close Jenis Sertifikasi suggestions if click is outside input or suggestions list
+            if (showJenisSuggestions && !event.target.closest('#jenisSertifikasi') && !event.target.closest('.jenis-suggestions-list')) {
+                setShowJenisSuggestions(false);
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [activeCertPopupIndex, showJenisSuggestions]);
+
+
+    // Function to handle menu clicks
+    const handleMenuClick = (menu) => {
+        setActiveMenu(menu);
+        // Clear editing state when switching menus
+        setEditingCertification(null);
+        // Clear form fields
+        setFormNamaSertifikasi('');
+        setFormTingkatSertifikasi('');
+        setFormRelevansiSertifikasi('');
+        setFormTingkatSertifikasiLainnya('');
+        setFormJenisSertifikasi('');
+        // Close all popups/suggestions
+        setActiveCertPopupIndex(null);
+        setShowJenisSuggestions(false);
+        setSelectedTingkatExplanation(''); // Clear tingkat explanation card
+    };
+
+    // Function to handle "Buat Riwayat Sertifikasi" button click
+    const handleCreateCertificationClick = () => {
+        setEditingCertification(null); // Ensure no old data is pre-filled
+        setFormNamaSertifikasi('');
+        setFormTingkatSertifikasi('');
+        setFormRelevansiSertifikasi('');
+        setFormTingkatSertifikasiLainnya('');
+        setFormJenisSertifikasi('');
+        setActiveMenu('simulasi-pengisian');
+        // Close all popups/suggestions
+        setActiveCertPopupIndex(null);
+        setShowJenisSuggestions(false);
+        setSelectedTingkatExplanation(''); // Clear tingkat explanation card
+    };
+
+    // Function to handle "Pilih Sertifikasi" button click from the table
+    const handleSelectCertification = (certName) => {
+        setSelectedCertificationName(certName);
+        setFormNamaSertifikasi(certName);
+        setShowCertificationNameTable(false);
+        setActiveCertPopupIndex(null); // Close cert popup after selection
+    };
+
+    // Function to handle Tingkat Sertifikasi dropdown change
+    const handleTingkatSertifikasiChange = (e) => {
+        const selectedValue = e.target.value;
+        setFormTingkatSertifikasi(selectedValue);
+        setSelectedTingkatExplanation(tingkatExplanations[selectedValue] || '');
+    };
+
+    // Function to handle form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!db || !userId) {
+            console.error("Firestore not initialized or user not authenticated.");
+            return;
+        }
+
+        const certificationData = {
+            namaSertifikasi: formNamaSertifikasi,
+            tingkatSertifikasi: formTingkatSertifikasi,
+            relevansiSertifikasi: formRelevansiSertifikasi,
+            tingkatSertifikasiLainnya: formTingkatSertifikasiLainnya,
+            jenisSertifikasi: formJenisSertifikasi,
+            status: 'Diajukan', // Default status
+            tanggalPengajuan: new Date().toISOString(),
+        };
+
+        try {
+            if (editingCertification) {
+                // Update existing certification
+                await updateDoc(doc(db, `artifacts/${__app_id}/users/${userId}/certifications`, editingCertification.id), certificationData);
+                alert('Riwayat sertifikasi berhasil diperbarui!');
+            } else {
+                // Add new certification
+                await addDoc(collection(db, `artifacts/${__app_id}/users/${userId}/certifications`), certificationData);
+                alert('Riwayat sertifikasi berhasil ditambahkan!');
+            }
+            // Clear form fields after submission
+            setFormNamaSertifikasi('');
+            setFormTingkatSertifikasi('');
+            setFormRelevansiSertifikasi('');
+            setFormTingkatSertifikasiLainnya('');
+            setFormJenisSertifikasi('');
+            setSelectedCertificationName('');
+            setEditingCertification(null);
+            setSelectedTingkatExplanation(''); // Clear explanation card
+            setActiveMenu('riwayat-sertifikasi'); // Go back to list after save
+        } catch (error) {
+            console.error("Error saving document: ", error);
+            alert('Gagal menyimpan riwayat sertifikasi.');
+        }
+    };
+
+    // Function to handle "Lengkapi" (Edit) button click in the table
+    const handleLengkapi = (cert) => {
+        setEditingCertification(cert);
+        setFormNamaSertifikasi(cert.namaSertifikasi);
+        setFormTingkatSertifikasi(cert.tingkatSertifikasi);
+        setFormRelevansiSertifikasi(cert.relevansiSertifikasi);
+        setFormTingkatSertifikasiLainnya(cert.tingkatSertifikasiLainnya);
+        setFormJenisSertifikasi(cert.jenisSertifikasi);
+        setActiveMenu('simulasi-pengisian');
+        // Set explanation for pre-filled tingkat
+        setSelectedTingkatExplanation(tingkatExplanations[cert.tingkatSertifikasi] || '');
+        // Close all popups/suggestions
+        setActiveCertPopupIndex(null);
+        setShowJenisSuggestions(false);
+    };
+
+    // Function to handle delete certification
+    const handleDelete = async (id) => {
+        if (!db || !userId) {
+            console.error("Firestore not initialized or user not authenticated.");
+            return;
+        }
+        if (window.confirm("Apakah Anda yakin ingin menghapus riwayat sertifikasi ini?")) { // Using window.confirm for simplicity
+            try {
+                const docRef = doc(db, `artifacts/${__app_id}/users/${userId}/certifications`, id);
+                await deleteDoc(docRef);
+                alert('Riwayat sertifikasi berhasil dihapus!');
+                // If the deleted item was the one being edited, clear editing state
+                if (editingCertification && editingCertification.id === id) {
+                    setEditingCertification(null);
+                    setFormNamaSertifikasi('');
+                    setFormTingkatSertifikasi('');
+                    setFormRelevansiSertifikasi('');
+                    setFormTingkatSertifikasiLainnya('');
+                    setFormJenisSertifikasi('');
+                    setSelectedTingkatExplanation(''); // Clear explanation card
+                }
+            } catch (error) {
+                console.error("Error deleting document:", error);
+                alert('Gagal menghapus riwayat sertifikasi.');
             }
         }
-        /* Custom scrollbar for webkit browsers */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #1e293b; /* slate-800 */
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: #475569; /* slate-600 */
-            border-radius: 10px;
-            border: 2px solid #1e293b; /* slate-800 */
-        }
+    };
 
-        /* Styles from 'pencapaian-kinerja' file */
-        .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out;
-        }
-        .accordion-button.open + .accordion-content {
-            max-height: 500px; /* Adjust as needed */
-        }
-        
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        .modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal-content {
-            background-color: #1a202c; /* bg-gray-900 */
-            color: #f7fafc; /* text-white */
-            padding: 2rem;
-            border-radius: 0.75rem; /* rounded-xl */
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
-            max-width: 500px;
-            width: 90%;
-            transform: translateY(-20px);
-            opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-        .modal-overlay.show .modal-content {
-            transform: translateY(0);
-            opacity: 1;
-        }
+    return (
+        <div className="flex h-screen font-sans" style={{ fontFamily: 'Inter, sans-serif' }}>
+            {/* Custom Styles from index.html */}
+            <style>
+                {`
+                body {
+                    background-color: #111827; /* bg-gray-900 */
+                    color: #d1d5db; /* text-gray-300 */
+                }
+                .sidebar-active {
+                    background-color: #374151; /* bg-gray-700 */
+                    color: #ffffff; /* text-white */
+                    border-left: 3px solid #3b82f6; /* border-blue-500 */
+                }
+                .content-section {
+                    display: none; /* Managed by React's conditional rendering */
+                }
+                .content-section.active {
+                    display: block; /* Managed by React's conditional rendering */
+                }
+                .info-popup {
+                    display: none; /* Default hidden */
+                    position: absolute;
+                    z-index: 50;
+                    width: 350px;
+                    background-color: #374151; /* bg-gray-700 */
+                    border: 1px solid #4b5563; /* border-gray-600 */
+                    border-radius: 0.5rem;
+                    padding: 1rem;
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+                    pointer-events: none; /* Allows hover to pass through to element below if needed */
+                }
+                .info-popup.active {
+                    display: block; /* Show when active */
+                    pointer-events: auto; /* Allow interaction when active */
+                }
+                /* Positioning for Nama Sertifikasi popups within table cells */
+                .info-popup-cert {
+                    left: 100%; /* Position to the right of the parent */
+                    top: 0;
+                    margin-left: 8px; /* Small gap */
+                }
+                /* Styling for Jenis Sertifikasi suggestions list */
+                .jenis-suggestions-list {
+                    z-index: 51; /* Higher than other popups if needed */
+                }
+                /* Styling for the explanation card */
+                .explanation-card {
+                    background-color: #2d3748; /* bg-gray-800 */
+                    border: 1px solid #4a5568; /* border-gray-700 */
+                    border-radius: 0.5rem;
+                    padding: 1rem;
+                    margin-top: 0.5rem;
+                    color: #e2e8f0; /* text-gray-200 */
+                    font-size: 0.875rem; /* text-sm */
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                }
+                @keyframes pulse {
+                    0%, 100% {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+                    50% {
+                        opacity: 0.7;
+                        transform: scale(1.1);
+                    }
+                }
+                .pulse-animate {
+                    animation: pulse 2s infinite;
+                }
+                `}
+            </style>
 
-        /* Styles for Pelatihan Panel */
-        .pelatihan-sidebar-item {
-            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-        }
-        .pelatihan-sidebar-item.active {
-            background-color: #2563eb; /* bg-blue-600 */
-            color: white;
-            font-weight: 600;
-        }
-        .pelatihan-content-panel {
-            display: none;
-        }
-        .pelatihan-content-panel.active {
-            display: block;
-        }
-        .info-trigger {
-            cursor: pointer;
-        }
-         .info-trigger:hover {
-            color: #ffffff;
-        }
-        .info-modal-content {
-            transition: transform 0.3s ease;
-        }
+            {/* Sidebar */}
+            <aside className="w-64 bg-gray-800 text-gray-300 flex flex-col">
+                <div className="h-16 flex items-center justify-center border-b border-gray-700">
+                    <h1 className="text-2xl font-bold text-white">PARHATA</h1>
+                </div>
+                <nav className="flex-1 px-4 py-4">
+                    <ul>
+                        <li className="mb-2">
+                            <button
+                                onClick={() => handleMenuClick('panduan-umum')}
+                                className={`sidebar-link flex items-center px-4 py-2.5 rounded-lg hover:bg-gray-700 transition-colors duration-200 w-full text-left ${
+                                    activeMenu === 'panduan-umum' ? 'sidebar-active' : ''
+                                }`}
+                            >
+                                <i className="fas fa-book-open w-6 mr-3"></i>
+                                <span>Panduan Umum</span>
+                            </button>
+                        </li>
+                        <li className="mb-2">
+                            <button
+                                onClick={() => handleMenuClick('riwayat-sertifikasi')}
+                                className={`sidebar-link flex items-center px-4 py-2.5 rounded-lg hover:bg-gray-700 transition-colors duration-200 w-full text-left ${
+                                    activeMenu === 'riwayat-sertifikasi' ? 'sidebar-active' : ''
+                                }`}
+                            >
+                                <i className="fas fa-history w-6 mr-3"></i>
+                                <span>Riwayat Sertifikasi</span>
+                            </button>
+                        </li>
+                        <li className="mb-2">
+                            <button
+                                onClick={() => handleMenuClick('simulasi-pengisian')}
+                                className={`sidebar-link flex items-center px-4 py-2.5 rounded-lg hover:bg-gray-700 transition-colors duration-200 w-full text-left ${
+                                    activeMenu === 'simulasi-pengisian' ? 'sidebar-active' : ''
+                                }`}
+                            >
+                                <i className="fas fa-edit w-6 mr-3"></i>
+                                <span>Simulasi & Pengisian</span>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+                {/* Removed the User ID display as requested */}
+            </aside>
 
-        /* Styles for Jabatan Panel */
-        #panel-jabatan .jabatan-sidebar-active {
-            background-color: #374151; /* bg-gray-700 */
-            color: #ffffff; /* text-white */
-            border-left: 3px solid #3b82f6; /* border-blue-500 */
-        }
-        #panel-jabatan .jabatan-content-section {
-            display: none;
-        }
-        #panel-jabatan .jabatan-content-section.active {
-            display: block;
-        }
-        #panel-jabatan .info-popup {
-            display: none;
-            position: absolute;
-            z-index: 50;
-            width: 350px;
-            background-color: #374151; /* bg-gray-700 */
-            border: 1px solid #4b5563; /* border-gray-600 */
-            border-radius: 0.5rem;
-            padding: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            pointer-events: none;
-        }
-        #panel-jabatan .info-icon:hover + .info-popup, #panel-jabatan .info-icon-table:hover + .info-popup {
-            display: block;
-        }
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.7;
-                transform: scale(1.1);
-            }
-        }
-        #panel-jabatan .pulse-animate {
-            animation: pulse 2s infinite;
-        }
-    </style>
-</head>
-<body class="bg-slate-100">
+            {/* Main Content */}
+            <main className="flex-1 p-6 lg:p-10 overflow-y-auto bg-gray-900">
 
-    <div class="flex h-screen bg-gray-900 text-white">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-slate-900 text-slate-200 flex flex-col fixed h-full">
-            <div class="px-6 py-4 border-b border-slate-700">
-                <h1 class="text-xl font-bold text-white flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                    <span>Panduan SOP</span>
-                </h1>
-                <p class="text-sm text-slate-400 mt-1">Portofolio PARHATA</p>
-            </div>
-            <nav id="sidebar-nav" class="flex-1 p-4 space-y-2 overflow-y-auto custom-scrollbar">
-                <a href="#" class="sidebar-link block py-2.5 px-4 rounded font-medium active" data-target="panel-panduan-umum">Panduan Umum</a>
-                <a href="#" class="sidebar-link block py-2.5 px-4 rounded font-medium" data-target="panel-jabatan">Riwayat Jabatan</a>
-                <a href="#" class="sidebar-link block py-2.5 px-4 rounded font-medium" data-target="panel-pendidikan">Riwayat Pendidikan</a>
-                <a href="#" class="sidebar-link block py-2.5 px-4 rounded font-medium" data-target="panel-pelatihan">Riwayat Pelatihan</a>
-                <a href="#" class="sidebar-link block py-2.5 px-4 rounded font-medium" data-target="panel-seminar">Riwayat Seminar</a>
-                <a href="#" class="sidebar-link block py-2.5 px-4 rounded font-medium" data-target="panel-sertifikasi">Riwayat Sertifikasi</a>
-                <a href="#" class="sidebar-link block py-2.5 px-4 rounded font-medium" data-target="panel-kinerja">Pencapaian Kinerja</a>
-            </nav>
-        </aside>
+                {/* Display connection status */}
+                {connectionStatus === 'disconnected' && (
+                    <div className="bg-red-900/20 border border-red-500 text-red-300 px-4 py-3 rounded-lg relative mb-6" role="alert">
+                        <strong className="font-bold">Koneksi Terputus!</strong>
+                        <span className="block sm:inline ml-2">Tidak dapat terhubung ke server Firestore. Aplikasi mungkin beroperasi dalam mode offline. Silakan periksa koneksi internet Anda.</span>
+                    </div>
+                )}
+                {connectionStatus === 'error' && (
+                    <div className="bg-red-900/20 border border-red-500 text-red-300 px-4 py-3 rounded-lg relative mb-6" role="alert">
+                        <strong className="font-bold">Terjadi Kesalahan!</strong>
+                        <span className="block sm:inline ml-2">Terjadi kesalahan saat mengambil data dari Firestore. Silakan coba lagi nanti.</span>
+                    </div>
+                )}
 
-        <!-- Main Content -->
-        <main class="flex-1 ml-64 p-6 md:p-10 overflow-y-auto bg-slate-50 text-slate-800">
-            <div id="content-area">
-                <!-- Panel Panduan Umum -->
-                <div id="panel-panduan-umum" class="content-panel active">
-                    <h2 class="text-3xl font-bold content-title text-slate-800 mb-6">Panduan Umum PARHATA</h2>
-                    <div class="bg-white p-8 rounded-xl shadow-md">
-                        <h3 class="text-2xl md:text-3xl font-bold text-slate-800 text-center mb-2">Panduan Penggunaan Aplikasi PARHATA</h3>
-                        <p class="mt-2 text-lg text-slate-600 max-w-3xl mx-auto text-center">Tahapan dan jadwal pemutakhiran data mandiri dan proses verifikasi se-Provinsi Sumatera Utara.</p>
-                        
-                        <div class="mt-10">
-                            <h4 class="text-xl font-bold text-center mb-8 text-slate-800">Linimasa Proses Pemutakhiran Data</h4>
-                            <div class="max-w-2xl mx-auto relative">
-                                <div class="border-l-2 border-slate-200 absolute h-full top-0 left-3"></div>
-                                <div class="mb-8 flex items-center w-full">
-                                    <div class="z-10 bg-blue-500 h-6 w-6 rounded-full shadow-lg"></div>
-                                    <div class="ml-4">
-                                        <p class="font-semibold text-blue-600">28 Juli – 1 Agustus 2025</p>
-                                        <h5 class="font-bold text-slate-800">Periode Pengisian Data Mandiri</h5>
-                                        <p class="text-slate-600 text-sm">Pegawai melakukan pemutakhiran data portofolio.</p>
-                                    </div>
+                {/* 1. Panduan Umum Section */}
+                {activeMenu === 'panduan-umum' && (
+                    <section id="panduan-umum" className="content-section active">
+                        <div className="bg-gray-800 p-8 rounded-xl shadow-lg">
+                            <h2 className="text-3xl font-bold text-white mb-4">Panduan Umum Portofolio Sertifikasi</h2>
+                            <p className="mb-6 text-gray-400">Selamat datang di modul Portofolio Riwayat Sertifikasi. Modul ini bertujuan untuk mendokumentasikan dan menilai rekam jejak sertifikasi Anda secara sistematis.</p>
+                            
+                            <div className="space-y-4">
+                                <div>
+                                    <h3 className="text-xl font-semibold text-teal-400 mb-2">Tujuan Pengisian</h3>
+                                    <p>Pengisian portofolio ini penting untuk keperluan manajemen talenta, pengembangan karir, dan proses seleksi. Data yang akurat dan lengkap akan membantu sistem dalam memberikan penilaian yang objektif.</p>
                                 </div>
-                                <div class="mb-8 flex items-center w-full">
-                                    <div class="z-10 bg-slate-400 h-6 w-6 rounded-full shadow-lg"></div>
-                                    <div class="ml-4">
-                                        <p class="font-semibold text-slate-500">1 Agustus 2025, 23:59 WIB</p>
-                                        <h5 class="font-bold text-slate-800">Penguncian Data</h5>
-                                        <p class="text-slate-600 text-sm">Sistem otomatis mengunci akses input dan edit.</p>
-                                    </div>
+                                <div>
+                                    <h3 className="text-xl font-semibold text-teal-400 mb-2">Dasar Hukum</h3>
+                                    <p>Pengelolaan data dan penilaian sertifikasi didasarkan pada peraturan yang berlaku terkait sertifikasi profesional dan pengembangan kompetensi.</p>
                                 </div>
-                                <div class="mb-8 flex items-center w-full">
-                                    <div class="z-10 bg-purple-500 h-6 w-6 rounded-full shadow-lg"></div>
-                                    <div class="ml-4">
-                                        <p class="font-semibold text-purple-600">4–15 Agustus 2025</p>
-                                        <h5 class="font-bold text-slate-800">Periode Penilaian / Verifikasi</h5>
-                                        <p class="text-slate-600 text-sm">Tim Verifikator melakukan penilaian data pegawai.</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center w-full">
-                                    <div class="z-10 bg-green-500 h-6 w-6 rounded-full shadow-lg"></div>
-                                    <div class="ml-4">
-                                        <h5 class="font-bold text-slate-800">Hasil Penilaian</h5>
-                                        <p class="text-slate-600 text-sm">Hasil akhir disampaikan melalui sistem PARHATA.</p>
-                                    </div>
+                                <div>
+                                    <h3 className="text-xl font-semibold text-teal-400 mb-2">Sinkronisasi Data</h3>
+                                    <p>Perlu diketahui bahwa beberapa data sertifikasi Anda mungkin ditarik secara otomatis dari sistem terkait. Sinkronisasi ini dilakukan oleh sistem PARHATA secara berkala. Pastikan data Anda selalu ter-update.</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </section>
+                )}
 
-                <!-- Panel Riwayat Jabatan -->
-                <div id="panel-jabatan" class="content-panel bg-gray-900 text-gray-300 p-0 -m-6 md:-m-10">
-                    <div class="flex h-full">
-                        <!-- Inner Sidebar for Jabatan -->
-                        <aside class="w-64 bg-gray-800 text-gray-300 flex-col hidden md:flex">
-                            <div class="h-16 flex items-center justify-center border-b border-gray-700">
-                                <h1 class="text-xl font-bold text-white">Menu Jabatan</h1>
-                            </div>
-                            <nav id="jabatan-sidebar-nav" class="flex-1 px-4 py-4">
-                                <a href="#jabatan-panduan-umum" class="jabatan-sidebar-link flex items-center px-4 py-2.5 rounded-lg hover:bg-gray-700 transition-colors duration-200 jabatan-sidebar-active">
-                                    <i class="fas fa-book-open w-6"></i>
-                                    <span>Panduan Umum</span>
-                                </a>
-                                <a href="#jabatan-riwayat-jabatan" class="jabatan-sidebar-link flex items-center px-4 py-2.5 mt-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
-                                    <i class="fas fa-history w-6"></i>
-                                    <span>Riwayat Jabatan</span>
-                                </a>
-                                <a href="#jabatan-simulasi" class="jabatan-sidebar-link flex items-center px-4 py-2.5 mt-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
-                                    <i class="fas fa-edit w-6"></i>
-                                    <span>Simulasi & Pengisian</span>
-                                </a>
-                            </nav>
-                        </aside>
-                         <!-- Inner Content for Jabatan -->
-                        <div class="flex-1 p-6 lg:p-10 overflow-y-auto">
-                            <section id="jabatan-panduan-umum" class="jabatan-content-section active">
-                                <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
-                                    <h2 class="text-3xl font-bold text-white mb-4">Panduan Umum Portofolio Jabatan</h2>
-                                    <p class="mb-6 text-gray-400">Selamat datang di modul Portofolio Riwayat Jabatan. Modul ini bertujuan untuk mendokumentasikan dan menilai rekam jejak jabatan Anda secara sistematis.</p>
-                                    <div class="space-y-4">
-                                        <div>
-                                            <h3 class="text-xl font-semibold text-blue-400 mb-2">Tujuan Pengisian</h3>
-                                            <p>Pengisian portofolio ini penting untuk keperluan manajemen talenta, pengembangan karir, dan proses seleksi jabatan. Data yang akurat dan lengkap akan membantu sistem dalam memberikan penilaian yang objektif.</p>
-                                        </div>
-                                        <div>
-                                            <h3 class="text-xl font-semibold text-blue-400 mb-2">Dasar Hukum</h3>
-                                            <p>Pengelolaan data dan penilaian kinerja Aparatur Sipil Negara (ASN) didasarkan pada Peraturan Pemerintah (PP) No. 30 Tahun 2019 tentang Penilaian Kinerja PNS dan peraturan terkait lainnya yang berlaku.</p>
-                                        </div>
-                                        <div>
-                                            <h3 class="text-xl font-semibold text-blue-400 mb-2">Sinkronisasi Data</h3>
-                                            <p>Perlu diketahui bahwa sebagian besar data riwayat jabatan Anda, seperti nama jabatan, TMT, dan wilayah, ditarik secara otomatis dari Sistem Informasi Kepegawaian (SIMPEG). Sinkronisasi ini dilakukan oleh sistem PARHATA setiap hari pada pukul <span class="font-bold text-yellow-400">00:00 WIB</span>. Pastikan data Anda di SIMPEG selalu ter-update.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                            <section id="jabatan-riwayat-jabatan" class="jabatan-content-section">
-                                <h2 class="text-3xl font-bold text-white mb-2">Riwayat Jabatan</h2>
-                                <p class="text-gray-400 mb-6">Berikut adalah daftar riwayat jabatan Anda.</p>
-                                <div class="bg-blue-900/20 border border-blue-500 text-blue-300 px-4 py-3 rounded-lg relative mb-6" role="alert">
-                                    <strong class="font-bold">Informasi Penting!</strong>
-                                    <span class="block sm:inline ml-2">Data awal ditarik dari SIMPEG. Klik tombol <b class="text-yellow-400">Lengkapi</b> untuk mengisi data Relevansi dan Dampak/Kontribusi.</span>
-                                </div>
-                                <div class="bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-                                    <div class="p-4">
-                                        <div class="flex justify-between items-center">
-                                            <div>
-                                                <button class="bg-gray-700 text-white px-4 py-2 rounded-lg text-sm">Semua</button>
-                                                <button class="bg-gray-900 text-gray-400 px-4 py-2 rounded-lg text-sm ml-2">Disetujui 0</button>
-                                                <button class="bg-gray-900 text-gray-400 px-4 py-2 rounded-lg text-sm ml-2">Ditolak 0</button>
-                                                <button class="bg-gray-900 text-gray-400 px-4 py-2 rounded-lg text-sm ml-2">Diajukan 11</button>
-                                            </div>
-                                            <div class="relative">
-                                                <input type="search" placeholder="Search" class="bg-gray-700 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="overflow-x-auto">
-                                        <table class="w-full text-sm text-left text-gray-400">
-                                            <thead class="text-xs text-gray-300 uppercase bg-gray-700/50">
-                                                <tr>
-                                                    <th scope="col" class="px-6 py-3 info-trigger" data-title="Info: Jabatan" data-info="Nama jabatan dan unit kerja. Data ditarik dari SIMPEG.">Jabatan</th>
-                                                    <th scope="col" class="px-6 py-3 info-trigger" data-title="Info: Wilayah" data-info="Lokasi penempatan untuk jabatan terkait. Data ditarik dari SIMPEG.">Wilayah</th>
-                                                    <th scope="col" class="px-6 py-3 info-trigger" data-title="Info: TMT" data-info="Tanggal Mulai Terhitung (TMT) jabatan. Data ditarik dari SIMPEG.">TMT</th>
-                                                    <th scope="col" class="px-6 py-3 info-trigger" data-title="Info: Durasi Jabatan" data-info="Lama waktu menjabat pada posisi tersebut. Dihitung otomatis oleh sistem.">Durasi Jabatan</th>
-                                                    <th scope="col" class="px-6 py-3 info-trigger" data-title="Info: Relevansi" data-info="Tingkat kesesuaian jabatan dengan jabatan saat ini. Diisi oleh pegawai dan diverifikasi.">Relevansi</th>
-                                                    <th scope="col" class="px-6 py-3 info-trigger" data-title="Info: Dampak/Kontribusi" data-info="Tingkat pengaruh atau kontribusi jabatan terhadap organisasi. Diisi oleh pegawai dan diverifikasi.">Dampak/Kontribusi</th>
-                                                    <th scope="col" class="px-6 py-3 info-trigger" data-title="Info: Status" data-info="Status pengajuan data: Diajukan, Disetujui, atau Ditolak.">Status</th>
-                                                    <th scope="col" class="px-6 py-3 info-trigger" data-title="Info: Aksi" data-info="Tindakan yang dapat dilakukan, seperti melengkapi atau melihat detail data.">Aksi</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr class="border-b border-gray-700">
-                                                    <td class="px-6 py-4 font-medium text-white">Pranata Humas Ahli Pertama Subbagian Kepegawaian & Hukum</td>
-                                                    <td class="px-6 py-4">Prov. Sumatera Utara</td>
-                                                    <td class="px-6 py-4">2011-01-01</td>
-                                                    <td class="px-6 py-4">2 Tahun</td>
-                                                    <td class="px-6 py-4">Sebagian besar relevan</td>
-                                                    <td class="px-6 py-4">Dampak Sedang</td>
-                                                    <td class="px-6 py-4"><span class="bg-yellow-900 text-yellow-300 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">Diajukan</span></td>
-                                                    <td class="px-6 py-4 text-center">
-                                                        <button class="jabatan-lengkapi-btn font-medium text-blue-500 hover:underline pulse-animate">
-                                                            <i class="fas fa-edit mr-1"></i>Lengkapi
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr class="border-b border-gray-700 bg-gray-800/50">
-                                                    <td class="px-6 py-4 font-medium text-white">Penugasan Pranata Humas Mahir Subbagian Kepegawaian & Hukum</td>
-                                                    <td class="px-6 py-4">Prov. Sumatera Utara</td>
-                                                    <td class="px-6 py-4">2013-01-02</td>
-                                                    <td class="px-6 py-4">1 Tahun</td>
-                                                    <td class="px-6 py-4">Sebagian besar relevan</td>
-                                                    <td class="px-6 py-4">Dampak Sedang</td>
-                                                    <td class="px-6 py-4"><span class="bg-yellow-900 text-yellow-300 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">Diajukan</span></td>
-                                                    <td class="px-6 py-4 text-center">
-                                                        <button class="jabatan-lengkapi-btn font-medium text-blue-500 hover:underline">
-                                                            <i class="fas fa-edit mr-1"></i>Lengkapi
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </section>
-                            <section id="jabatan-simulasi" class="jabatan-content-section">
-                                <div class="flex justify-between items-center mb-6">
+                {/* 2. Riwayat Sertifikasi Section */}
+                {activeMenu === 'riwayat-sertifikasi' && (
+                    <section id="riwayat-sertifikasi" className="content-section active">
+                        <h2 className="text-3xl font-bold text-white mb-2">Riwayat Sertifikasi</h2>
+                        <p className="text-gray-400 mb-6">Berikut adalah daftar riwayat sertifikasi Anda.</p>
+
+                        <div className="bg-blue-900/20 border border-blue-500 text-blue-300 px-4 py-3 rounded-lg relative mb-6" role="alert">
+                            <strong className="font-bold">Informasi Penting!</strong>
+                            <span className="block sm:inline ml-2">Data awal mungkin ditarik dari sistem lain. Klik tombol <b className="text-yellow-400">Lengkapi</b> untuk mengisi data Relevansi dan Tipe Sertifikasi.</span>
+                        </div>
+
+                        <div className="bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                            <div className="p-4">
+                                <div className="flex justify-between items-center">
                                     <div>
-                                        <h2 class="text-3xl font-bold text-white">Edit Jabatan Hist</h2>
-                                        <p class="text-gray-400">Silakan lengkapi data berikut dengan benar.</p>
+                                        <button className="bg-gray-700 text-white px-4 py-2 rounded-lg text-sm">Semua</button>
+                                        <button className="bg-gray-900 text-gray-400 px-4 py-2 rounded-lg text-sm ml-2">Disetujui 0</button>
+                                        <button className="bg-gray-900 text-gray-400 px-4 py-2 rounded-lg text-sm ml-2">Ditolak 0</button>
+                                        <button className="bg-gray-900 text-gray-400 px-4 py-2 rounded-lg text-sm ml-2">Diajukan {certifications.filter(c => c.status === 'Diajukan').length}</button>
                                     </div>
-                                    <button class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">
-                                        <i class="fas fa-trash-alt mr-2"></i>Delete
+                                    <div className="relative">
+                                        <input type="search" placeholder="Search" className="bg-gray-700 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-300"/>
+                                        <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-sm text-left text-gray-400">
+                                    <thead className="text-xs text-gray-300 uppercase bg-gray-700/50">
+                                        <tr>
+                                            <th scope="col" className="px-6 py-3">Nama Sertifikasi</th>
+                                            <th scope="col" className="px-6 py-3">Tingkat Sertifikasi</th>
+                                            <th scope="col" className="px-6 py-3">Relevansi</th>
+                                            <th scope="col" className="px-6 py-3">Tingkat Lainnya</th>
+                                            <th scope="col" className="px-6 py-3">Jenis Sertifikasi</th>
+                                            <th scope="col" className="px-6 py-3">Status</th>
+                                            <th scope="col" className="px-6 py-3 text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {certifications.length > 0 ? (
+                                            certifications.map((cert) => (
+                                                <tr key={cert.id} className="border-b border-gray-700">
+                                                    <td className="px-6 py-4 font-medium text-white">{cert.namaSertifikasi}</td>
+                                                    <td className="px-6 py-4">{cert.tingkatSertifikasi}</td>
+                                                    <td className="px-6 py-4">{cert.relevansiSertifikasi}</td>
+                                                    <td className="px-6 py-4">{cert.tingkatSertifikasiLainnya}</td>
+                                                    <td className="px-6 py-4">{cert.jenisSertifikasi}</td>
+                                                    <td className="px-6 py-4">
+                                                        <span className={`
+                                                            ${cert.status === 'Diajukan' ? 'bg-yellow-900 text-yellow-300' :
+                                                              cert.status === 'Disetujui' ? 'bg-green-900 text-green-300' :
+                                                              'bg-red-900 text-red-300'}
+                                                            text-xs font-medium me-2 px-2.5 py-0.5 rounded-full
+                                                        `}>
+                                                            {cert.status}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-6 py-4 text-center">
+                                                        <button
+                                                            onClick={() => handleLengkapi(cert)}
+                                                            className="font-medium text-blue-500 hover:underline mr-4"
+                                                        >
+                                                            <i className="fas fa-edit mr-1"></i>Lengkapi
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDelete(cert.id)}
+                                                            className="font-medium text-red-500 hover:underline"
+                                                        >
+                                                            <i className="fas fa-trash-alt mr-1"></i>Hapus
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan="7" className="px-6 py-4 text-center text-gray-500">
+                                                    Belum ada riwayat sertifikasi. Klik "Buat Riwayat Sertifikasi" untuk menambahkan.
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className="p-4 text-right">
+                                <button
+                                    onClick={handleCreateCertificationClick}
+                                    className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
+                                >
+                                    Buat Riwayat Sertifikasi
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                )}
+
+                {/* 3. Simulasi & Pengisian Section */}
+                {activeMenu === 'simulasi-pengisian' && (
+                    <section id="simulasi-pengisian" className="content-section active">
+                        <div className="flex justify-between items-center mb-6">
+                            <div>
+                                <h2 className="text-3xl font-bold text-white">
+                                    {editingCertification ? 'Edit Riwayat Sertifikasi' : 'Create Riwayat Sertifikasi'}
+                                </h2>
+                                <p className="text-gray-400">Silakan lengkapi data berikut dengan benar.</p>
+                            </div>
+                            {editingCertification && (
+                                <button
+                                    onClick={() => handleDelete(editingCertification.id)}
+                                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200"
+                                >
+                                    <i className="fas fa-trash-alt mr-2"></i>Delete
+                                </button>
+                            )}
+                        </div>
+
+                        <div className="bg-gray-800 p-8 rounded-xl shadow-lg">
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div>
+                                    <label htmlFor="namaSertifikasi" className="block mb-2 text-sm font-medium text-gray-300">
+                                        Nama Sertifikasi<span className="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="namaSertifikasi"
+                                        className="bg-gray-700 border border-gray-600 text-gray-300 text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Ketik nama sertifikasinya"
+                                        value={formNamaSertifikasi}
+                                        onChange={(e) => setFormNamaSertifikasi(e.target.value)}
+                                        onClick={() => setShowCertificationNameTable(true)}
+                                        required
+                                    />
+                                    {showCertificationNameTable && (
+                                        <div className="mt-4 bg-gray-700 rounded-lg shadow-lg p-4 max-h-60 overflow-y-auto">
+                                            <h3 className="text-lg font-semibold text-teal-300 mb-3">Pilih Nama Sertifikasi</h3>
+                                            <table className="min-w-full divide-y divide-gray-600">
+                                                <thead className="bg-gray-600">
+                                                    <tr>
+                                                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Nama Sertifikasi</th>
+                                                        <th className="px-4 py-2 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="divide-y divide-gray-700">
+                                                    {availableCertifications.map((cert, index) => (
+                                                        <tr key={index} className="hover:bg-gray-600">
+                                                            <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-200 relative">
+                                                                {cert.name}
+                                                                <i className="fas fa-info-circle text-blue-400 ml-1 cursor-pointer info-icon info-icon-cert"
+                                                                   onClick={(e) => {
+                                                                       e.stopPropagation(); // Prevent click from bubbling up
+                                                                       setActiveCertPopupIndex(activeCertPopupIndex === index ? null : index);
+                                                                   }}></i>
+                                                                <div className={`info-popup info-popup-cert ${activeCertPopupIndex === index ? 'active' : ''}`}>
+                                                                    <h4 className="font-bold text-white mb-2">Deskripsi Sertifikasi</h4>
+                                                                    <p className="text-gray-200 text-sm">{cert.description}</p>
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-4 py-2 whitespace-nowrap text-right text-sm font-medium">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleSelectCertification(cert.name)}
+                                                                    className="text-teal-400 hover:text-teal-300"
+                                                                >
+                                                                    Pilih
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label htmlFor="tingkatSertifikasi" className="block mb-2 text-sm font-medium text-gray-300">
+                                            Tingkat Sertifikasi <span className="text-red-500">*</span>
+                                        </label>
+                                        <select
+                                            id="tingkatSertifikasi"
+                                            className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                            value={formTingkatSertifikasi}
+                                            onChange={handleTingkatSertifikasiChange}
+                                            required
+                                        >
+                                            <option value="">Pilih Tingkat</option>
+                                            <option value="Dasar">Dasar</option>
+                                            <option value="Menengah">Menengah</option>
+                                            <option value="Profesional">Profesional</option>
+                                        </select>
+                                        {selectedTingkatExplanation && (
+                                            <div className="explanation-card">
+                                                <p>{selectedTingkatExplanation}</p>
+                                            </div>
+                                        )}
+                                        <p className="mt-2 text-xs text-gray-500">Silakan pilih tingkat sertifikasi.</p>
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="relevansiSertifikasi" className="block mb-2 text-sm font-medium text-gray-300">
+                                            Relevansi Sertifikasi <span className="text-red-500">*</span>
+                                            <i className="fas fa-info-circle text-blue-400 ml-1 cursor-pointer info-icon"></i>
+                                            <div className="info-popup">
+                                                <h4 className="font-bold text-white mb-2">Keterangan Relevansi Sertifikasi</h4>
+                                                <ul className="list-disc list-inside space-y-1 text-sm">
+                                                    <li><b className="text-gray-200">Tidak Relevan:</b> Tidak berkaitan langsung dengan bidang pekerjaan saat ini.</li>
+                                                    <li><b className="text-gray-200">Sebagian Relevan:</b> Sebagian materi atau keahlian mendukung bidang pekerjaan saat ini.</li>
+                                                    <li><b className="text-gray-200">Sangat Relevan:</b> Sertifikasi sepenuhnya mendukung dan relevan dengan bidang pekerjaan saat ini.</li>
+                                                </ul>
+                                            </div>
+                                        </label>
+                                        <select
+                                            id="relevansiSertifikasi"
+                                            className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                            value={formRelevansiSertifikasi}
+                                            onChange={(e) => setFormRelevansiSertifikasi(e.target.value)}
+                                            required
+                                        >
+                                            <option value="">Pilih Relevansi</option>
+                                            <option value="Tidak Relevan">Tidak Relevan</option>
+                                            <option value="Sebagian Relevan">Sebagian Relevan</option>
+                                            <option value="Sangat Relevan">Sangat Relevan</option>
+                                        </select>
+                                        <p className="mt-2 text-xs text-gray-500">Silakan pilih relevansi sertifikasi dengan pekerjaan Anda.</p>
+                                    </div>
+                                </div>
+
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label htmlFor="tingkatSertifikasiLainnya" className="block mb-2 text-sm font-medium text-gray-300">
+                                            Tingkat Sertifikasi Lainnya <span className="text-red-500">*</span>
+                                        </label>
+                                        <select
+                                            id="tingkatSertifikasiLainnya"
+                                            className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                            value={formTingkatSertifikasiLainnya}
+                                            onChange={(e) => setFormTingkatSertifikasiLainnya(e.target.value)}
+                                            required
+                                        >
+                                            <option value="">Pilih Tingkat</option>
+                                            <option value="Nasional">Nasional</option>
+                                            <option value="Internasional">Internasional</option>
+                                            <option value="Lokal">Lokal</option>
+                                        </select>
+                                        <p className="mt-2 text-xs text-gray-500">Silakan pilih tingkat sertifikasi (misal: Nasional, Internasional).</p>
+                                    </div>
+
+                                    <div className="relative"> {/* Add relative for absolute positioning of suggestions */}
+                                        <label htmlFor="jenisSertifikasi" className="block mb-2 text-sm font-medium text-gray-300">
+                                            Jenis Sertifikasi <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="jenisSertifikasi"
+                                            className="bg-gray-700 border border-gray-600 text-gray-300 text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            placeholder="Ketik jenis sertifikasinya (misal: PBJ, PPK)"
+                                            value={formJenisSertifikasi}
+                                            onChange={(e) => {
+                                                const inputValue = e.target.value;
+                                                setFormJenisSertifikasi(inputValue);
+                                                if (inputValue.length > 0) {
+                                                    const filtered = jenisSertifikasiOptions.filter(option =>
+                                                        option.toLowerCase().includes(inputValue.toLowerCase())
+                                                    );
+                                                    setFilteredJenisSuggestions(filtered);
+                                                    setShowJenisSuggestions(true);
+                                                } else {
+                                                    setFilteredJenisSuggestions(jenisSertifikasiOptions); // Show all if input is empty
+                                                    setShowJenisSuggestions(true);
+                                                }
+                                            }}
+                                            onFocus={() => {
+                                                if (formJenisSertifikasi.length > 0) {
+                                                    const filtered = jenisSertifikasiOptions.filter(option =>
+                                                        option.toLowerCase().includes(formJenisSertifikasi.toLowerCase())
+                                                    );
+                                                    setFilteredJenisSuggestions(filtered);
+                                                } else {
+                                                    setFilteredJenisSuggestions(jenisSertifikasiOptions); // Show all if input is empty on focus
+                                                }
+                                                setShowJenisSuggestions(true);
+                                            }}
+                                            onBlur={() => {
+                                                // Delay hiding to allow click event on suggestions to fire
+                                                setTimeout(() => setShowJenisSuggestions(false), 100);
+                                            }}
+                                            required
+                                        />
+                                        {showJenisSuggestions && filteredJenisSuggestions.length > 0 && (
+                                            <div className="absolute z-10 w-full bg-gray-700 border border-gray-600 rounded-lg shadow-lg mt-1 max-h-40 overflow-y-auto jenis-suggestions-list">
+                                                {filteredJenisSuggestions.map((suggestion, idx) => (
+                                                    <div
+                                                        key={idx}
+                                                        className="px-4 py-2 cursor-pointer hover:bg-gray-600 text-gray-200"
+                                                        onMouseDown={() => { // Use onMouseDown to prevent onBlur from firing first
+                                                            setFormJenisSertifikasi(suggestion);
+                                                            setShowJenisSuggestions(false);
+                                                        }}
+                                                    >
+                                                        {suggestion}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                        <p className="mt-2 text-xs text-gray-500">Ketik jenis sertifikasinya (misal: PBJ, Bendahara, PPK, PPSPM, Lainnya).</p>
+                                    </div>
+                                </div>
+
+                                <div className="mt-8 flex items-center gap-4">
+                                    <button
+                                        type="submit"
+                                        className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-200"
+                                    >
+                                        {editingCertification ? 'Simpan Perubahan' : 'Simpan Riwayat Sertifikasi'}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleMenuClick('riwayat-sertifikasi')}
+                                        className="text-gray-300 bg-transparent hover:bg-gray-700 border border-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-200"
+                                    >
+                                        Batal
                                     </button>
                                 </div>
-                                <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
-                                    <div class="space-y-6">
-                                        <div>
-                                            <label for="jabatan-edit-jabatan" class="block mb-2 text-sm font-medium text-gray-300">Jabatan</label>
-                                            <input type="text" id="jabatan-edit-jabatan" class="bg-gray-700 border border-gray-600 text-gray-300 text-sm rounded-lg block w-full p-2.5 cursor-not-allowed" value="Pranata Humas Ahli Pertama Subbagian Kepegawaian & Hukum" disabled>
-                                        </div>
-                                        <div class="grid md:grid-cols-2 gap-6">
-                                            <div>
-                                                <label for="relevansi" class="block mb-2 text-sm font-medium text-gray-300 relative">
-                                                    Relevansi Jabatan <span class="text-red-500">*</span>
-                                                    <i class="fas fa-info-circle text-blue-400 ml-1 cursor-pointer info-icon"></i>
-                                                    <div class="info-popup">
-                                                        <h4 class="font-bold text-white mb-2">Keterangan Relevansi Jabatan</h4>
-                                                        <ul class="list-disc list-inside space-y-1 text-sm">
-                                                            <li><b class="text-gray-200">Tidak Relevan:</b> Tidak berkaitan langsung dengan tugas jabatan saat ini.</li>
-                                                            <li><b class="text-gray-200">Sebagian Relevan:</b> Sebagian tugas atau tanggung jawab mendukung jabatan saat ini.</li>
-                                                            <li><b class="text-gray-200">Sangat Relevan:</b> Jabatan sepenuhnya mendukung dan relevan dengan tugas saat ini.</li>
-                                                        </ul>
-                                                    </div>
-                                                </label>
-                                                <select id="relevansi" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                                    <option>Pilih Relevansi</option>
-                                                    <option value="Tidak relevan">Tidak Relevan</option>
-                                                    <option value="Sebagian relevan">Sebagian Relevan</option>
-                                                    <option value="Sangat relevan" selected>Sangat Relevan</option>
-                                                </select>
-                                                <p class="mt-2 text-xs text-gray-500">Jabatan sepenuhnya mendukung dan relevan dengan tugas saat ini.</p>
-                                            </div>
-                                            <div>
-                                                <label for="dampak" class="block mb-2 text-sm font-medium text-gray-300 relative">
-                                                    Dampak/Kontribusi <span class="text-red-500">*</span>
-                                                    <i class="fas fa-info-circle text-blue-400 ml-1 cursor-pointer info-icon"></i>
-                                                    <div class="info-popup">
-                                                        <h4 class="font-bold text-white mb-2">Keterangan Kontribusi & Dampak</h4>
-                                                        <ul class="list-disc list-inside space-y-1 text-sm">
-                                                            <li><b class="text-gray-200">Dampak Rendah:</b> Jabatan dengan kontribusi terbatas pada tugas operasional.</li>
-                                                            <li><b class="text-gray-200">Dampak Sedang:</b> Jabatan dengan kontribusi pada pengelolaan program atau tim.</li>
-                                                            <li><b class="text-gray-200">Dampak Tinggi:</b> Jabatan strategis yang berpengaruh pada pengambilan keputusan besar.</li>
-                                                        </ul>
-                                                    </div>
-                                                </label>
-                                                <select id="dampak" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                                    <option>Pilih Dampak</option>
-                                                    <option value="Dampak rendah">Dampak Rendah</option>
-                                                    <option value="Dampak sedang" selected>Dampak Sedang</option>
-                                                    <option value="Dampak tinggi">Dampak Tinggi</option>
-                                                </select>
-                                                <p class="mt-2 text-xs text-gray-500">Jabatan dengan kontribusi pada pengelolaan program atau tim.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-8 flex items-center gap-4">
-                                        <button type="button" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-200">Save Changes</button>
-                                        <button type="button" id="jabatan-cancel-edit" class="text-gray-300 bg-transparent hover:bg-gray-700 border border-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-200">Cancel</button>
-                                    </div>
-                                </div>
-                            </section>
+                            </form>
                         </div>
-                    </div>
-                </div>
+                    </section>
+                )}
+            </main>
+        </div>
+    );
+};
 
-                <div id="panel-pendidikan" class="content-panel">
-                     <h2 class="text-3xl font-bold content-title text-slate-800 mb-6">SOP Riwayat Pendidikan</h2>
-                     <div class="bg-white p-8 rounded-xl shadow-md">
-                        <div class="flex items-start gap-6">
-                            <div class="bg-green-100 text-green-600 p-4 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                            </div>
-                            <div>
-                                <h3 class="text-2xl font-bold text-slate-800">Melengkapi Riwayat Pendidikan</h3>
-                                <p class="text-slate-600 mt-1">Data riwayat pendidikan (D-III ke atas) ditarik otomatis dari SIMPEG.</p>
-                            </div>
-                        </div>
-                        <div class="mt-8 border-t pt-6">
-                            <h4 class="font-bold text-lg text-slate-700 mb-4">Tugas Anda:</h4>
-                            <ol class="list-decimal list-inside space-y-4 text-slate-600">
-                                <li><span class="font-semibold">Pilih Data:</span> Klik "Lengkapi" pada data yang relevan.</li>
-                                <li><span class="font-semibold">Isi Detail:</span> Lengkapi "Prestasi Akademik" dan "Relevansi Pendidikan".</li>
-                                <li><span class="font-semibold">Unggah Bukti Dukung:</span> Unggah Ijazah & Transkrip Nilai (satu file PDF).</li>
-                                <li><span class="font-semibold">Simpan Perubahan:</span> Pastikan untuk menyimpan data.</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="panel-pelatihan" class="content-panel">
-                    <h2 class="text-3xl font-bold content-title text-slate-800 mb-6">SOP Riwayat Pelatihan</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                        <aside class="md:col-span-1 bg-white p-4 rounded-xl shadow-md h-fit">
-                            <nav id="pelatihan-sidebar-nav" class="space-y-2">
-                                <a href="#" data-target="content-kategori" class="pelatihan-sidebar-item active block w-full text-left p-3 rounded-lg">
-                                    1. Kategori Pelatihan
-                                </a>
-                                <a href="#" data-target="content-klasikal" class="pelatihan-sidebar-item block w-full text-left p-3 rounded-lg">
-                                    2. Penentuan Klasikal & Non-Klasikal
-                                </a>
-                                <a href="#" data-target="content-panduan" class="pelatihan-sidebar-item block w-full text-left p-3 rounded-lg">
-                                    3. Panduan Pengisian di SIMPEG
-                                </a>
-                                <a href="#" data-target="content-parhata" class="pelatihan-sidebar-item block w-full text-left p-3 rounded-lg">
-                                    4. Simulasi Portofolio PARHATA
-                                </a>
-                            </nav>
-                        </aside>
-                        <div class="md:col-span-3">
-                            <div id="pelatihan-content-area" class="bg-white p-6 rounded-xl shadow-md min-h-[400px]">
-                                <div id="content-kategori" class="pelatihan-content-panel active">
-                                    <h3 class="text-2xl font-bold text-slate-800 mb-4">1. Kategori Pelatihan</h3>
-                                    <div class="prose max-w-none text-slate-700 space-y-4">
-                                         <div class="p-4 border-l-4 border-blue-500 bg-blue-50 rounded-r-lg">
-                                            <h4 class="font-bold text-lg">A. Pelatihan / Workshop</h4>
-                                            <p>Termasuk semua diklat, pelatihan, workshop, bimbingan teknis (bimtek) baik daring maupun luring.</p>
-                                            <div class="mt-3 p-3 bg-red-100 border-l-4 border-red-500 text-red-800 rounded-r-md"><p class="font-semibold">PERHATIAN: Jika pelatihan dilakukan secara daring dan memakai platform digital, masuk ke kategori E-Learning (Non-Klasikal).</p></div>
-                                            <p class="mt-3">Sertifikat harus mencantumkan jumlah Jam Pelajaran (JP). Jika tidak, unggah juga:</p>
-                                            <ul class="list-disc list-inside mt-1 space-y-1"><li>Tertib Acara / Rundown Acara untuk menghitung jumlah jam pelaksanaan.</li></ul>
-                                        </div>
-                                        <div class="p-4 border-l-4 border-green-500 bg-green-50 rounded-r-lg">
-                                            <h4 class="font-bold text-lg">B. Seminar / Webinar</h4>
-                                            <p>Termasuk ke dalam pelatihan klasikal walaupun diselenggarakan secara daring. Tujuannya adalah pemberian wawasan/pengetahuan, bukan keterampilan langsung. Biasanya berdurasi singkat (beberapa jam – 1 hari).</p>
-                                             <p class="mt-3">Sertifikat harus diunggah, dan bila tidak mencantumkan JP, bisa dihitung dari jadwal acara.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="content-klasikal" class="pelatihan-content-panel">
-                                    <h3 class="text-2xl font-bold text-slate-800 mb-4">2. Penentuan Klasikal & Non-Klasikal</h3>
-                                    <div class="overflow-x-auto">
-                                        <table class="min-w-full border border-slate-200 rounded-lg"><thead class="bg-slate-100"><tr><th class="p-3 text-left font-semibold text-slate-700">Kategori</th><th class="p-3 text-left font-semibold text-slate-700">Jenis Kegiatan</th></tr></thead><tbody><tr class="border-t"><td class="p-3 font-medium text-cyan-700 bg-cyan-50">Klasikal</td><td class="p-3">Tatap muka, seminar/webinar, kursus, pelatihan langsung.</td></tr><tr class="border-t"><td class="p-3 font-medium text-purple-700 bg-purple-50">Non-Klasikal</td><td class="p-3">E-learning, bimbingan kerja, pelatihan jarak jauh, magang, workshop daring.</td></tr></tbody></table>
-                                    </div>
-                                    <div class="mt-4 p-3 bg-amber-100 border-l-4 border-amber-500 text-amber-800 rounded-r-md"><p><strong class="font-semibold">Catatan:</strong> Sertifikat WEGO silakan diupload di SIMPEG, tetapi saat ini belum dapat dinilaikan di PARHATA, sampai dengan pemberitahuan lebih lanjut dengan SOP terbaru.</p></div>
-                                </div>
-                                <div id="content-panduan" class="pelatihan-content-panel">
-                                     <h3 class="text-2xl font-bold text-slate-800 mb-4">3. Panduan Pengisian di SIMPEG</h3>
-                                     <div class="overflow-x-auto"><table class="min-w-full border border-slate-200 rounded-lg"><thead class="bg-slate-100"><tr><th class="p-3 text-left font-semibold text-slate-700">Kolom</th><th class="p-3 text-left font-semibold text-slate-700">Panduan Pengisian</th></tr></thead><tbody><tr class="border-t"><td class="p-3 font-medium">Nama Diklat</td><td class="p-3">Isi sesuai judul pada sertifikat.</td></tr><tr class="border-t bg-slate-50"><td class="p-3 font-medium">Bentuk</td><td class="p-3">Pilih <strong>Klasikal</strong> atau <strong>Non-Klasikal</strong>.</td></tr><tr class="border-t"><td class="p-3 font-medium">Kategori</td><td class="p-3">Pilih yang paling sesuai: Pelatihan, Seminar, Workshop, Bimtek.</td></tr><tr class="border-t bg-slate-50"><td class="p-3 font-medium">Durasi</td><td class="p-3">Isi dalam satuan Jam Pelajaran (JP). Jika tidak ada, hitung dari rundown (1 JP = 45 menit).</td></tr><tr class="border-t"><td class="p-3 font-medium">Dokumen</td><td class="p-3">Unggah file sertifikat. Jika JP tidak ada, unggah juga rundown acara.</td></tr></tbody></table></div>
-                                     <div class="mt-12"><header class="text-center mb-6"><h3 class="text-2xl md:text-3xl font-bold text-slate-900">Simulasi Tampilan Input di SIMPEG</h3><p class="text-md text-slate-600">Berikut adalah contoh pengisian data pelatihan di SIMPEG.</p></header><div class="border border-gray-300 bg-white rounded-lg shadow-lg max-w-2xl mx-auto"><div class="flex justify-between items-center p-3 bg-blue-600 text-white rounded-t-lg"><h4 class="font-bold">Detail Diklat</h4><button class="text-xl font-bold">&times;</button></div><div class="p-6 space-y-3 text-sm"><p class="text-center font-semibold text-slate-700 mb-4">KURSUS/PELATIHAN</p><div class="flex border-b py-2"><p class="w-1/3 text-slate-500">Skala</p><p class="w-2/3 font-medium text-slate-800">: Nasional</p></div><div class="flex border-b py-2"><p class="w-1/3 text-slate-500">Bentuk</p><p class="w-2/3 font-medium text-slate-800">: Klasikal</p></div><div class="flex border-b py-2"><p class="w-1/3 text-slate-500">Kategori</p><p class="w-2/3 font-medium text-slate-800">: Bimbingan teknis</p></div><div class="flex border-b py-2"><p class="w-1/3 text-slate-500">Jenis</p><p class="w-2/3 font-medium text-slate-800">: Pembelajaran</p></div><div class="flex border-b py-2"><p class="w-1/3 text-slate-500">Nama Diklat</p><p class="w-2/3 font-medium text-slate-800">: Training of Trainers Orientasi PPPK Tahun 2024</p></div><div class="flex border-b py-2"><p class="w-1/3 text-slate-500">Mulai</p><p class="w-2/3 font-medium text-slate-800">: 27-10-2024</p></div><div class="flex border-b py-2"><p class="w-1/3 text-slate-500">Selesai</p><p class="w-2/3 font-medium text-slate-800">: 01-11-2024</p></div><div class="flex border-b py-2"><p class="w-1/3 text-slate-500">Durasi</p><p class="w-2/3 font-medium text-slate-800">: 39 jam</p></div><div class="flex border-b py-2"><p class="w-1/3 text-slate-500">Tempat</p><p class="w-2/3 font-medium text-slate-800">: Pusdiklat BPS</p></div><div class="flex border-b py-2"><p class="w-1/3 text-slate-500">Nomor Sertifikat</p><p class="w-2/3 font-medium text-slate-800">: 0033/TEKNIS/4929/BPS/A/2024</p></div><div class="flex items-center py-2"><p class="w-1/3 text-slate-500">Dokumen</p><div class="w-2/3 flex items-center space-x-2"><span>:</span><select class="border border-gray-300 rounded p-1 w-full"></select><button class="px-3 py-1 bg-gray-200 border border-gray-400 rounded text-xs">Tambah Dokumen</button><button class="px-3 py-1 bg-gray-200 border border-gray-400 rounded text-xs">Upload</button></div></div></div><div class="flex justify-end p-3 bg-gray-50 rounded-b-lg"><button class="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L14.732 3.732z" /></svg>Ubah</button></div></div></div>
-                                </div>
-                                <div id="content-parhata" class="pelatihan-content-panel">
-                                    <h3 class="text-2xl font-bold text-slate-800 mb-4">4. Simulasi Portofolio Riwayat Pelatihan di PARHATA</h3>
-                                    <div class="mb-4 p-3 bg-blue-50 border-l-4 border-blue-500 text-blue-800 rounded-r-lg">
-                                        <p><strong>Tips:</strong> Silakan klik pada nama kolom di tabel di bawah untuk memunculkan penjelasan detail mengenai masing-masing kolom.</p>
-                                    </div>
-                                    <div class="bg-slate-800 text-white rounded-xl shadow-2xl p-4 sm:p-6">
-                                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4"><h4 class="text-xl font-bold mb-4 sm:mb-0">Riwayat Pelatihan</h4><div class="flex space-x-2 text-sm"><button class="bg-blue-600 px-3 py-1 rounded-md">Semua</button><button class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded-md">Disetujui <span class="bg-slate-500 text-xs px-1.5 py-0.5 rounded-full ml-1">0</span></button><button class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded-md">Ditolak <span class="bg-slate-500 text-xs px-1.5 py-0.5 rounded-full ml-1">0</span></button><button class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded-md">Diajukan <span class="bg-amber-500 text-xs px-1.5 py-0.5 rounded-full ml-1">7</span></button></div></div>
-                                        <div class="overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap"><thead class="border-b border-slate-600 text-slate-400"><tr><th class="p-3 info-trigger" data-title="Info: Nama Pelatihan" data-info="Nama pelatihan ditarik otomatis dari SIMPEG. Perubahan hanya bisa dilakukan oleh tim verifikator (SDM)."><i class="fas fa-info-circle mr-1"></i> Nama Pelatihan</th><th class="p-3 info-trigger" data-title="Info: Durasi" data-info="Durasi ditarik otomatis dari SIMPEG dalam satuan Jam Pelajaran (JP). Tidak dapat diubah oleh pegawai."><i class="fas fa-info-circle mr-1"></i> Durasi</th><th class="p-3 info-trigger" data-title="Info: Relevansi" data-info="Relevansi ditarik otomatis dari SIMPEG dan akan diverifikasi oleh Tim SDM. Tidak dapat diubah oleh pegawai."><i class="fas fa-info-circle mr-1"></i> Relevansi</th><th class="p-3 info-trigger" data-title="Info: Jenis Tingkat" data-info="Jenis tingkat (Lokal, Nasional, Internasional) sesuai data yang diinput di SIMPEG."><i class="fas fa-info-circle mr-1"></i> Jenis Tingkat</th><th class="p-3 info-trigger" data-title="Info: Bukti Pelatihan" data-info="Bukti pelatihan ditarik dari dokumen (sertifikat/rundown) yang diunggah di SIMPEG."><i class="fas fa-info-circle mr-1"></i> Bukti Pelatihan</th><th class="p-3">Status</th></tr></thead><tbody class="divide-y divide-slate-700"><tr class="hover:bg-slate-700/50"><td class="p-3">Training of Trainers Orientasi PPPK Tahun 2024</td><td class="p-3">10-40 Jam</td><td class="p-3">Sebagian kecil relevan</td><td class="p-3">Nasional</td><td class="p-3 text-center"><a href="#" class="text-blue-400 hover:text-blue-300" title="Unduh Bukti"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg></a></td><td class="p-3"><span class="bg-amber-500/20 text-amber-400 text-xs font-medium px-2.5 py-1 rounded-full">Diajukan</span></td></tr><tr class="hover:bg-slate-700/50"><td class="p-3">Sosialisasi Penilaian Kinerja Jabatan Fungsional Arsiparis</td><td class="p-3">&lt;10 Jam</td><td class="p-3">Sebagian kecil relevan</td><td class="p-3">Nasional</td><td class="p-3 text-center"><a href="#" class="text-blue-400 hover:text-blue-300" title="Unduh Bukti"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg></a></td><td class="p-3"><span class="bg-amber-500/20 text-amber-400 text-xs font-medium px-2.5 py-1 rounded-full">Diajukan</span></td></tr></tbody></table></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="panel-seminar" class="content-panel">
-                    <h2 class="text-3xl font-bold content-title text-slate-800 mb-6">SOP Riwayat Seminar</h2>
-                    <div class="bg-white p-8 rounded-xl shadow-md">
-                        <div class="flex items-start gap-6">
-                            <div class="bg-indigo-100 text-indigo-600 p-4 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 8-8 5 8 5 8-5-8-5z"></path><path d="M20 13v4c0 1.1-.9 2-2 2H6a2 2 0 0 1-2-2v-4"></path><path d="m4 13 8 5 8-5"></path></svg>
-                            </div>
-                            <div>
-                                <h3 class="text-2xl font-bold text-slate-800">Periksa & Tambah Riwayat Seminar</h3>
-                                <p class="text-slate-600 mt-1">Proses sama dengan Riwayat Pelatihan.</p>
-                            </div>
-                        </div>
-                         <div class="mt-8 border-t pt-6 grid md:grid-cols-2 gap-8">
-                            <div>
-                                <h4 class="font-bold text-lg text-slate-700 mb-4">1. Periksa Data Otomatis</h4>
-                                <ul class="list-disc list-inside space-y-2 text-slate-600">
-                                    <li>Tinjau data seminar dari SIMPEG.</li>
-                                    <li>Verifikasi kesesuaian dan relevansi.</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg text-slate-700 mb-4">2. Input Manual Data Baru</h4>
-                                <ul class="list-disc list-inside space-y-2 text-slate-600">
-                                    <li>Input seminar yang belum tercatat.</li>
-                                    <li>Unggah bukti dukung (sertifikat/materi) PDF.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="panel-sertifikasi" class="content-panel bg-gray-900 text-gray-300 p-0 -m-6 md:-m-10">
-                   <div class="flex h-full">
-                        <!-- Inner Sidebar for Sertifikasi -->
-                        <aside class="w-64 bg-gray-800 text-gray-300 flex-col hidden md:flex">
-                            <div class="h-16 flex items-center justify-center border-b border-gray-700">
-                                <h1 class="text-xl font-bold text-white">Menu Sertifikasi</h1>
-                            </d" code between  and  in the most up-to-date Canvas "Panduan Interaktif SOP PARHATA" document above and am asking a query about/based on this code below.
-Instructions to follow:
-  * Don't output/edit the document if the query is Direct/Simple. For example, if the query asks for a simple explanation, output a direct answer.
-  * Make sure to **edit** the document if the query shows the intent of editing the document, in which case output the entire edited document, **not just that section or the edits**.
-    * Don't output the same document/empty document and say that you have edited it.
-    * Don't change unrelated code in the document.
-  * Don't output  and  in your final response.
-  * Any references like "this" or "selected code" refers to the code between  and  tags.
-  * Just acknowledge my request in the introduction.
-  * Make sure to refer to the document as "Canvas" in your response.
-
-<div id="sertifikasi-content-area" class="flex-1 p-6 lg:p-10 overflow-y-auto">
-                            <!-- Content will be managed by React -->
-                        </d
+export default App;
