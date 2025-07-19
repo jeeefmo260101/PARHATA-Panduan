@@ -67,65 +67,20 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
-        /* Enhanced Accordion Styles */
-        .accordion-item {
-            background-color: #2d3748; /* Darker background for item */
-            border-radius: 0.75rem; /* rounded-xl */
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-        .accordion-item + .accordion-item {
-            margin-top: 1rem; /* Space between items */
-        }
-        .accordion-button {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.5rem; /* py-4 px-6 */
-            background-color: #2d3748; /* bg-gray-800 */
-            color: #e2e8f0; /* text-gray-200 */
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s ease, color 0.2s ease;
-        }
-        .accordion-button:hover {
-            background-color: #4a5568; /* hover:bg-gray-700 */
-            color: #ffffff;
-        }
-        .accordion-button.open {
-            background-color: #3b82f6; /* blue-500 for active */
-            color: #ffffff;
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-        .accordion-button .accordion-icon {
-            transition: transform 0.3s ease;
-        }
-        .accordion-button.open .accordion-icon {
-            transform: rotate(180deg);
-        }
         .accordion-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
-            background-color: #1a202c; /* bg-gray-900 */
-            color: #cbd5e0; /* text-gray-400 */
-            padding: 0 1.5rem; /* Adjust padding for closed state */
+            transition: max-height 0.5s ease-out;
         }
+        /* Adjusted max-height for better content display */
         .accordion-button.open + .accordion-content {
-            max-height: 500px; /* Adjust as needed */
-            padding: 1rem 1.5rem; /* py-4 px-6 for open state */
+            max-height: 2000px; /* Increased for more content */
         }
-        .accordion-content ul {
-            list-style: disc;
-            padding-left: 1.25rem; /* pl-5 */
+        /* Adjusted text color for better readability */
+        .accordion-content {
+            color: #d1d5db; /* gray-300 */
         }
-        .accordion-content ul li {
-            margin-bottom: 0.5rem;
-        }
-        
+
         /* Modal Styles */
         .modal-overlay {
             position: fixed;
@@ -178,7 +133,7 @@
         .info-trigger {
             cursor: pointer;
         }
-         .info-trigger:hover {
+        .info-trigger:hover {
             color: #ffffff;
         }
         .info-modal-content {
@@ -226,7 +181,7 @@
             animation: pulse 2s infinite;
         }
 
-        /* Styles for Certification */
+        /* Styles from index.html for Certification */
         .info-box {
             background-color: #4a5568;
             border-left: 4px solid #63b3ed;
@@ -505,6 +460,28 @@
             display: block;
         }
 
+        /* New styles for dropdown explanation box */
+        .explanation-box {
+            background-color: #2d3748; /* bg-gray-800 */
+            border: 1px solid #4a5568; /* border-gray-600 */
+            border-radius: 0.75rem; /* rounded-xl */
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            color: #e2e8f0; /* text-gray-200 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden by default */
+        }
+        .explanation-box p {
+            margin-bottom: 0.5rem;
+        }
+        .explanation-box ul {
+            list-style-type: disc;
+            margin-left: 1.25rem;
+        }
+        .explanation-box ul li {
+            margin-bottom: 0.25rem;
+        }
+
     </style>
 </head>
 <body class="bg-slate-100">
@@ -603,7 +580,7 @@
                                 </a>
                             </nav>
                         </aside>
-                         <!-- Inner Content for Jabatan -->
+                           <!-- Inner Content for Jabatan -->
                         <div class="flex-1 p-6 lg:p-10 overflow-y-auto">
                             <section id="jabatan-panduan-umum" class="jabatan-content-section active">
                                 <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
@@ -767,8 +744,8 @@
                 </div>
 
                 <div id="panel-pendidikan" class="content-panel">
-                     <h2 class="text-3xl font-bold content-title text-slate-800 mb-6">SOP Riwayat Pendidikan</h2>
-                     <div class="bg-white p-8 rounded-xl shadow-md">
+                    <h2 class="text-3xl font-bold content-title text-slate-800 mb-6">SOP Riwayat Pendidikan</h2>
+                    <div class="bg-white p-8 rounded-xl shadow-md">
                         <div class="flex items-start gap-6">
                             <div class="bg-green-100 text-green-600 p-4 rounded-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
@@ -817,18 +794,18 @@
                                 <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
                                     <h3 class="text-2xl font-bold text-white mb-4">1. Kategori Pelatihan</h3>
                                     <div class="prose max-w-none text-gray-400 space-y-4">
-                                         <div class="p-4 border-l-4 border-blue-500 bg-blue-900/20 rounded-r-lg">
-                                            <h4 class="font-bold text-lg text-blue-300">A. Pelatihan / Workshop</h4>
-                                            <p>Termasuk semua diklat, pelatihan, workshop, bimbingan teknis (bimtek) baik daring maupun luring.</p>
-                                            <div class="mt-3 p-3 bg-red-900/20 border-l-4 border-red-500 text-red-300 rounded-r-md"><p class="font-semibold">PERHATIAN: Jika pelatihan dilakukan secara daring dan memakai platform digital, masuk ke kategori E-Learning (Non-Klasikal).</p></div>
-                                            <p class="mt-3">Sertifikat harus mencantumkan jumlah Jam Pelajaran (JP). Jika tidak, unggah juga:</p>
-                                            <ul class="list-disc list-inside mt-1 space-y-1"><li>Tertib Acara / Rundown Acara untuk menghitung jumlah jam pelaksanaan.</li></ul>
-                                        </div>
-                                        <div class="p-4 border-l-4 border-green-500 bg-green-900/20 rounded-r-lg">
-                                            <h4 class="font-bold text-lg text-green-300">B. Seminar / Webinar</h4>
-                                            <p>Termasuk ke dalam pelatihan klasikal walaupun diselenggarakan secara daring. Tujuannya adalah pemberian wawasan/pengetahuan, bukan keterampilan langsung. Biasanya berdurasi singkat (beberapa jam – 1 hari).</p>
-                                             <p class="mt-3">Sertifikat harus diunggah, dan bila tidak mencantumkan JP, bisa dihitung dari jadwal acara.</p>
-                                        </div>
+                                           <div class="p-4 border-l-4 border-blue-500 bg-blue-900/20 rounded-r-lg">
+                                                <h4 class="font-bold text-lg text-blue-300">A. Pelatihan / Workshop</h4>
+                                                <p>Termasuk semua diklat, pelatihan, workshop, bimbingan teknis (bimtek) baik daring maupun luring.</p>
+                                                <div class="mt-3 p-3 bg-red-900/20 border-l-4 border-red-500 text-red-300 rounded-r-md"><p class="font-semibold">PERHATIAN: Jika pelatihan dilakukan secara daring dan memakai platform digital, masuk ke kategori E-Learning (Non-Klasikal).</p></div>
+                                                <p class="mt-3">Sertifikat harus mencantumkan jumlah Jam Pelajaran (JP). Jika tidak, unggah juga:</p>
+                                                <ul class="list-disc list-inside mt-1 space-y-1"><li>Tertib Acara / Rundown Acara untuk menghitung jumlah jam pelaksanaan.</li></ul>
+                                           </div>
+                                           <div class="p-4 border-l-4 border-green-500 bg-green-900/20 rounded-r-lg">
+                                                <h4 class="font-bold text-lg text-green-300">B. Seminar / Webinar</h4>
+                                                <p>Termasuk ke dalam pelatihan klasikal walaupun diselenggarakan secara daring. Tujuannya adalah pemberian wawasan/pengetahuan, bukan keterampilan langsung. Biasanya berdurasi singkat (beberapa jam – 1 hari).</p>
+                                                <p class="mt-3">Sertifikat harus diunggah, dan bila tidak mencantumkan JP, bisa dihitung dari jadwal acara.</p>
+                                           </div>
                                     </div>
                                 </div>
                             </section>
@@ -845,7 +822,8 @@
                                 <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
                                     <h3 class="text-2xl font-bold text-white mb-4">3. Simulasi Pengisian di SIMPEG</h3>
                                     <div class="overflow-x-auto"><table class="min-w-full border border-gray-700 rounded-lg"><thead class="bg-gray-700"><tr><th class="p-3 text-left font-semibold text-gray-300">Kolom</th><th class="p-3 text-left font-semibold text-gray-300">Panduan Pengisian</th></tr></thead><tbody><tr class="border-t border-gray-700"><td class="p-3 font-medium text-gray-300">Nama Diklat</td><td class="p-3 text-gray-400">Isi sesuai judul pada sertifikat.</td></tr><tr class="border-t border-gray-700 bg-gray-900/20"><td class="p-3 font-medium text-gray-300">Bentuk</td><td class="p-3 text-gray-400">Pilih <strong>Klasikal</strong> atau <strong>Non-Klasikal</strong>.</td></tr><tr class="border-t border-gray-700"><td class="p-3 font-medium text-gray-300">Kategori</td><td class="p-3 text-gray-400">Pilih yang paling sesuai: Pelatihan, Seminar, Workshop, Bimtek.</td></tr><tr class="border-t border-gray-700 bg-gray-900/20"><td class="p-3 font-medium text-gray-300">Durasi</td><td class="p-3 text-gray-400">Isi dalam satuan Jam Pelajaran (JP). Jika tidak ada, hitung dari rundown (1 JP = 45 menit).</td></tr><tr class="border-t border-gray-700"><td class="p-3 font-medium text-gray-300">Dokumen</td><td class="p-3 text-gray-400">Unggah file sertifikat. Jika JP tidak ada, unggah juga rundown acara.</td></tr></tbody></table></div>
-                                     <div class="mt-12"><header class="text-center mb-6"><h3 class="text-2xl md:text-3xl font-bold text-white">Simulasi Tampilan Input di SIMPEG</h3><p class="text-md text-gray-400">Berikut adalah contoh pengisian data pelatihan di SIMPEG.</p></header><div class="border border-gray-700 bg-gray-900 rounded-lg shadow-lg max-w-2xl mx-auto"><div class="flex justify-between items-center p-3 bg-blue-600 text-white rounded-t-lg"><h4 class="font-bold">Detail Diklat</h4><button class="text-xl font-bold">&times;</button></div><div class="p-6 space-y-3 text-sm"><p class="text-center font-semibold text-gray-300 mb-4">KURSUS/PELATIHAN</p><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Skala</p><p class="w-2/3 font-medium text-white">: Nasional</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Bentuk</p><p class="w-2/3 font-medium text-white">: Klasikal</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Kategori</p><p class="w-2/3 font-medium text-white">: Bimbingan teknis</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Jenis</p><p class="w-2/3 font-medium text-white">: Pembelajaran</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Nama Diklat</p><p class="w-2/3 font-medium text-white">: Training of Trainers Orientasi PPPK Tahun 2024</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Mulai</p><p class="w-2/3 font-medium text-white">: 27-10-2024</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Selesai</p><p class="w-2/3 font-medium text-white">: 01-11-2024</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Durasi</p><p class="w-2/3 font-medium text-white">: 39 jam</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Tempat</p><p class="w-2/3 font-medium text-white">: Pusdiklat BPS</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Nomor Sertifikat</p><p class="w-2/3 font-medium text-white">: 0033/TEKNIS/4929/BPS/A/2024</p></div><div class="flex items-center py-2"><p class="w-1/3 text-gray-400">Dokumen</p><div class="w-2/3 flex items-center space-x-2"><span>:</span><select class="border border-gray-600 rounded p-1 w-full bg-gray-700 text-white"></select><button class="px-3 py-1 bg-gray-600 border border-gray-500 rounded text-xs text-white">Tambah Dokumen</button><button class="px-3 py-1 bg-gray-600 border border-gray-500 rounded text-xs text-white">Upload</button></div></div></div><div class="flex justify-end p-3 bg-gray-700 rounded-b-lg"><button class="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L14.732 3.732z" /></svg>Ubah</button></div></div></div>
+                                       <div class="mt-12"><header class="text-center mb-6"><h3 class="text-2xl md:text-3xl font-bold text-white">Simulasi Tampilan Input di SIMPEG</h3><p class="text-md text-gray-400">Berikut adalah contoh pengisian data pelatihan di SIMPEG.</p></header><div class="border border-gray-700 bg-gray-900 rounded-lg shadow-lg max-w-2xl mx-auto"><div class="flex justify-between items-center p-3 bg-blue-600 text-white rounded-t-lg"><h4 class="font-bold">Detail Diklat</h4><button class="text-xl font-bold">&times;</button></div><div class="p-6 space-y-3 text-sm"><p class="text-center font-semibold text-gray-300 mb-4">KURSUS/PELATIHAN</p><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Skala</p><p class="w-2/3 font-medium text-white">: Nasional</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Bentuk</p><p class="w-2/3 font-medium text-white">: Klasikal</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Kategori</p><p class="w-2/3 font-medium text-white">: Bimbingan teknis</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Jenis</p><p class="w-2/3 font-medium text-white">: Pembelajaran</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Nama Diklat</p><p class="w-2/3 font-medium text-white">: Training of Trainers Orientasi PPPK Tahun 2024</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Mulai</p><p class="w-2/3 font-medium text-white">: 27-10-2024</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Selesai</p><p class="w-2/3 font-medium text-white">: 01-11-2024</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Durasi</p><p class="w-2/3 font-medium text-white">: 39 jam</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Tempat</p><p class="w-2/3 font-medium text-white">: Pusdiklat BPS</p></div><div class="flex border-b border-gray-700 py-2"><p class="w-1/3 text-gray-400">Nomor Sertifikat</p><p class="w-2/3 font-medium text-white">: 0033/TEKNIS/4929/BPS/A/2024</p></div><div class="flex items-center py-2"><p class="w-1/3 text-gray-400">Dokumen</p><div class="w-2/3 flex items-center space-x-2"><span>:</span><select class="border border-gray-600 rounded p-1 w-full bg-gray-700 text-white"></select><button class="px-3 py-1 bg-gray-600 border border-gray-500 rounded text-xs text-white">Tambah Dokumen</button><button class="px-3 py-1 bg-gray-600 border border-gray-500 rounded text-xs text-white">Upload</button></div></div></div><div class="flex justify-end p-3 bg-gray-700 rounded-b-lg"><button class="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L14.732 3.732z" /></svg>Ubah</button></div></div></div>
+                                </div>
                             </section>
                         </div>
                     </div>
@@ -863,22 +841,22 @@
                                 <p class="text-slate-600 mt-1">Proses sama dengan Riwayat Pelatihan.</p>
                             </div>
                         </div>
-                         <div class="mt-8 border-t pt-6 grid md:grid-cols-2 gap-8">
-                            <div>
-                                <h4 class="font-bold text-lg text-slate-700 mb-4">1. Periksa Data Otomatis</h4>
-                                <ul class="list-disc list-inside space-y-2 text-slate-600">
-                                    <li>Tinjau data seminar dari SIMPEG.</li>
-                                    <li>Verifikasi kesesuaian dan relevansi.</li>
-                                </ul>
+                           <div class="mt-8 border-t pt-6 grid md:grid-cols-2 gap-8">
+                                <div>
+                                    <h4 class="font-bold text-lg text-slate-700 mb-4">1. Periksa Data Otomatis</h4>
+                                    <ul class="list-disc list-inside space-y-2 text-slate-600">
+                                        <li>Tinjau data seminar dari SIMPEG.</li>
+                                        <li>Verifikasi kesesuaian dan relevansi.</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-slate-700 mb-4">2. Input Manual Data Baru</h4>
+                                    <ul class="list-disc list-inside space-y-2 text-slate-600">
+                                        <li>Input seminar yang belum tercatat.</li>
+                                        <li>Unggah bukti dukung (sertifikat/materi) PDF.</li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-lg text-slate-700 mb-4">2. Input Manual Data Baru</h4>
-                                <ul class="list-disc list-inside space-y-2 text-slate-600">
-                                    <li>Input seminar yang belum tercatat.</li>
-                                    <li>Unggah bukti dukung (sertifikat/materi) PDF.</li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -905,7 +883,7 @@
                                 </a>
                             </nav>
                         </aside>
-                         <!-- Inner Content for Sertifikasi -->
+                           <!-- Inner Content for Sertifikasi -->
                         <div class="flex-1 p-6 lg:p-10 overflow-y-auto">
                             <!-- Panduan Umum Portofolio Sertifikasi -->
                             <section id="sertifikasi-panduan-umum" class="sertifikasi-content-section active">
@@ -930,7 +908,8 @@
                                     <h3 class="text-2xl font-bold text-white mb-4">Riwayat Sertifikasi</h3>
                                     <div class="info-box bg-blue-900/20 border-blue-500 text-blue-300">
                                         <p class="font-bold">Informasi Penting!</p>
-                                        <p>Data awal mungkin ditarik dari sistem lain. Klik tombol <span class="font-bold">Lengkapi</span> untuk mengisi data Relevansi dan Tipe Sertifikasi.</p>
+                                        <!-- Updated narrative text -->
+                                        <span class="block sm:inline ml-2">Data awal ditarik dari SIMPEG. Klik tombol <b class="text-yellow-400">Lengkapi</b> untuk mengisi data Relevansi dan Tipe Sertifikasi.</span>
                                     </div>
 
                                     <div class="flex flex-wrap items-center justify-between mb-4">
@@ -1088,8 +1067,7 @@
                             <section id="kinerja-panduan-umum" class="kinerja-content-section active">
                                 <div class="bg-gray-800 p-8 rounded-xl shadow-lg text-center">
                                     <h2 class="text-3xl font-bold text-white mb-4">Memahami Pengisian Porfofolio Penilaian Kinerja</h2>
-                                    <p class="text-lg text-gray-400 max-w-3xl mx-auto mb-8">Selamat datang! Panduan ini dirancang untuk mempermudah Anda memahami proses pengisian portofolio penilaian kinerja.</p>
-                                    <p class="text-md text-gray-400 max-w-3xl mx-auto mb-8">Penting untuk diketahui bahwa hanya pencapaian kinerja yang terjadi sejak tahun 2023 yang dapat dinilaikan dalam sistem ini.</p>
+                                    <p class="text-lg text-gray-400 max-w-3xl mx-auto mb-8">Selamat datang! Panduan ini dirancang untuk mempermudah Anda memahami proses pengisian portofolio penilaian kinerja. Bukti yang dapat dinilai adalah sejak tahun 2023 ke atas.</p>
                                     <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
                                         <div class="flex items-center flex-col p-4">
                                             <div class="bg-[#A9C5A0] text-white rounded-full h-16 w-16 flex items-center justify-center text-2xl font-bold">1</div>
@@ -1124,8 +1102,20 @@
                             <section id="kinerja-panduan-peran-khusus" class="kinerja-content-section">
                                 <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
                                     <h2 class="text-3xl font-bold text-white mb-2 text-center">Panduan untuk Peran Khusus</h2>
-                                    <p class="text-lg text-gray-400 text-center max-w-3xl mx-auto mb-10">Apakah Anda seorang Ketua Tim, Anggota Tim, Pengelola Keuangan, Pejabat Pengadaan, atau pernah bertindak sebagai Pelaksana Tugas (Plt.)? Buka bagian yang relevan untuk melihat panduan pengisian yang spesifik untuk peran Anda.</p>
-                                    <div id="special-guidance-accordion" class="max-w-3xl mx-auto bg-gray-900 rounded-xl shadow-lg p-6 space-y-4">
+                                    <p class="text-lg text-gray-400 text-center max-w-3xl mx-auto mb-10">Apakah Anda seorang Ketua Tim, Anggota Tim, Pengelola Keuangan, Pejabat Pengadaan, atau pernah bertindak sebagai Pelaksana Tugas (Plt.)? Pilih peran Anda di bawah ini untuk melihat panduan pengisian yang spesifik.</p>
+                                    
+                                    <div class="max-w-3xl mx-auto bg-gray-900 rounded-xl shadow-lg p-6 space-y-4">
+                                        <label for="role-selector" class="block text-sm font-medium text-gray-300 mb-2">Pilih Peran:</label>
+                                        <select id="role-selector" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-[#A9C5A0] focus:border-[#A9C5A0]">
+                                            <option value="">-- Pilih Peran --</option>
+                                            <option value="ketua_tim">Pengelola Tim (Ketua Tim)</option>
+                                            <option value="anggota_tim">Anggota Tim</option>
+                                            <option value="pengelola_keuangan">Jabatan Pengelola Keuangan (Bendahara, PPK, PPSPM, PBJ)</option>
+                                            <option value="plt">Pelaksana Tugas (Plt.)</option>
+                                        </select>
+                                        <div id="role-explanation-box" class="explanation-box">
+                                            <!-- Explanation content will be loaded here -->
+                                        </div>
                                     </div>
                                 </div>
                             </section>
@@ -1209,12 +1199,12 @@
             </div>
             <footer class="mt-16 py-8 border-t border-slate-200">
                 <div class="max-w-4xl mx-auto text-center text-slate-500">
-                     <p class="text-sm mb-4">SOP digital ini dibuat sebagai panduan pengisian portofolio di PARHATA.</p>
-                     <p class="text-sm">
-                        © 2024 Tim Layanan Pengembangan Kompetensi dan Hukum
-                        <br>
-                        BPS Provinsi Sumatera Utara
-                     </p>
+                       <p class="text-sm mb-4">SOP digital ini dibuat sebagai panduan pengisian portofolio di PARHATA.</p>
+                       <p class="text-sm">
+                           © 2024 Tim Layanan Pengembangan Kompetensi dan Hukum
+                           <br>
+                           BPS Provinsi Sumatera Utara
+                       </p>
                 </div>
             </footer>
         </main>
@@ -1611,58 +1601,32 @@
 
             // --- Main Sidebar Navigation Logic ---
             const mainNavLinks = document.querySelectorAll('#sidebar-nav .sidebar-link');
-            // mainContentPanels is now queried inside showContent for freshness
+            const mainContentPanels = document.querySelectorAll('#content-area > .content-panel');
 
             // Fungsi untuk menampilkan konten berdasarkan menu yang dipilih (diperbarui untuk main sidebar)
             function showContent(targetId) {
-                const currentMainContentPanels = document.querySelectorAll('#content-area > .content-panel');
-
-                currentMainContentPanels.forEach(panel => {
-                    if (panel) { // Defensive check for each panel in the NodeList
-                        panel.style.display = 'none'; // Use direct style manipulation
-                        panel.classList.remove('active'); // Keep for potential animations if needed
-                    }
+                mainContentPanels.forEach(panel => {
+                    panel.classList.remove('active');
                 });
-
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.style.display = 'block'; // Use direct style manipulation
-                    targetElement.classList.add('active'); // Keep for potential animations if needed
-                } else {
-                    console.error(`Element with ID "${targetId}" not found for activation. Skipping activation.`);
-                    return; // Exit if element not found
-                }
+                document.getElementById(targetId).classList.add('active');
 
                 mainNavLinks.forEach(nav => {
-                    if (nav) { // Defensive check for each nav link
-                        nav.classList.remove('active');
-                        if (nav.getAttribute('data-target') === targetId) {
-                            nav.classList.add('active');
-                        }
+                    nav.classList.remove('active');
+                    if (nav.getAttribute('data-target') === targetId) {
+                        nav.classList.add('active');
                     }
                 });
-
-                // Conditional logic for specific panels
+                // If the target is 'panel-sertifikasi', ensure initial view is table and refresh data
                 if (targetId === 'panel-sertifikasi') {
-                    const sertifikasiListView = document.getElementById('sertifikasi-list-view');
-                    const sertifikasiSimulasiForm = document.getElementById('sertifikasi-simulasi-form');
-                    const toggleTableView = document.getElementById('toggle-table-view');
-                    const toggleCardView = document.getElementById('toggle-card-view');
-
-                    if (sertifikasiListView) sertifikasiListView.style.display = 'block';
-                    if (sertifikasiSimulasiForm) sertifikasiSimulasiForm.style.display = 'none';
-                    currentView = 'table';
-                    if (toggleTableView) toggleTableView.classList.add('active');
-                    if (toggleCardView) toggleCardView.classList.remove('active');
-                    filterAndSearchCertifications();
+                    // Default to showing the 'Panduan Umum' section within 'panel-sertifikasi'
+                    switchSertifikasiView('#sertifikasi-panduan-umum');
                 }
+                // If the target is 'panel-kinerja', ensure initial view is Panduan Umum
                 if (targetId === 'panel-kinerja') {
-                    // Ensure the inner sidebar and content sections are correctly initialized/displayed
-                    // I will add defensive checks inside switchKinerjaView as well.
                     switchKinerjaView('#kinerja-panduan-umum');
                 }
+                // If the target is 'panel-pelatihan', ensure initial view is Kategori Pelatihan
                 if (targetId === 'panel-pelatihan') {
-                    // Ensure the inner sidebar and content sections are correctly initialized/displayed
                     switchPelatihanView('#pelatihan-kategori');
                 }
             }
@@ -1692,7 +1656,7 @@
             };
 
             const closeInfoModal = () => {
-                 if(infoModalGeneral) {
+                   if(infoModalGeneral) {
                     infoModalGeneral.classList.add('opacity-0');
                     infoModalGeneral.querySelector('.info-modal-content').classList.add('scale-95');
                     setTimeout(() => {
@@ -1720,21 +1684,15 @@
 
             function switchJabatanView(targetId) {
                 jabatanContentSections.forEach(section => {
-                    if (section) { // Defensive check
-                        section.style.display = 'none'; // Use direct style manipulation
-                        section.classList.remove('active');
-                        if ('#' + section.id === targetId) {
-                            section.style.display = 'block'; // Use direct style manipulation
-                            section.classList.add('active');
-                        }
+                    section.classList.remove('active');
+                    if ('#' + section.id === targetId) {
+                        section.classList.add('active');
                     }
                 });
                 jabatanSidebarLinks.forEach(link => {
-                    if (link) { // Defensive check
-                        link.classList.remove('jabatan-sidebar-active');
-                        if (link.getAttribute('href') === targetId) {
-                            link.classList.add('jabatan-sidebar-active');
-                        }
+                    link.classList.remove('jabatan-sidebar-active');
+                    if (link.getAttribute('href') === targetId) {
+                        link.classList.add('jabatan-sidebar-active');
                     }
                 });
             }
@@ -1773,21 +1731,15 @@
             
             function switchPelatihanView(targetId) {
                 pelatihanContentSections.forEach(section => {
-                    if (section) { // Defensive check
-                        section.style.display = 'none'; // Use direct style manipulation
-                        section.classList.remove('active');
-                        if ('#' + section.id === targetId) {
-                            section.style.display = 'block'; // Use direct style manipulation
-                            section.classList.add('active');
-                        }
+                    section.classList.remove('active');
+                    if ('#' + section.id === targetId) {
+                        section.classList.add('active');
                     }
                 });
                 pelatihanSidebarLinks.forEach(link => {
-                    if (link) { // Defensive check
-                        link.classList.remove('pelatihan-sidebar-active');
-                        if (link.getAttribute('href') === targetId) {
-                            link.classList.add('pelatihan-sidebar-active');
-                        }
+                    link.classList.remove('pelatihan-sidebar-active');
+                    if (link.getAttribute('href') === targetId) {
+                        link.classList.add('pelatihan-sidebar-active');
                     }
                 });
             }
@@ -1807,21 +1759,15 @@
 
             function switchKinerjaView(targetId) {
                 kinerjaContentSections.forEach(section => {
-                    if (section) { // Defensive check
-                        section.style.display = 'none'; // Use direct style manipulation
-                        section.classList.remove('active');
-                        if ('#' + section.id === targetId) {
-                            section.style.display = 'block'; // Use direct style manipulation
-                            section.classList.add('active');
-                        }
+                    section.classList.remove('active');
+                    if ('#' + section.id === targetId) {
+                        section.classList.add('active');
                     }
                 });
                 kinerjaSidebarLinks.forEach(link => {
-                    if (link) { // Defensive check
-                        link.classList.remove('kinerja-sidebar-active');
-                        if (link.getAttribute('href') === targetId) {
-                            link.classList.add('kinerja-sidebar-active');
-                        }
+                    link.classList.remove('kinerja-sidebar-active');
+                    if (link.getAttribute('href') === targetId) {
+                        link.classList.add('kinerja-sidebar-active');
                     }
                 });
             }
@@ -1869,66 +1815,34 @@
                 });
             }
 
-            const specialGuidanceData = [
-                { title: 'Pengelola Tim (Ketua Tim)', content: '<p class="font-semibold">Aturan Pengisian:</p><ul class="list-disc list-inside space-y-2 mt-2"><li><b>Nama Pencapaian:</b> Contoh: "Ketua Tim Podcast \'PASKALIBAH\'".</li><li><b>Pencapaian Kinerja:</b> Disesuaikan dengan SKP dan PPK tahun bertugas.</li><li><b>Penghargaan:</b> Diisi jika ada penghargaan terkait.</li><li><b>Dampak Kontribusi:</b> Ditetapkan sebagai "Dampak Sedang".</li><li><b>Bukti Pencapaian:</b> Wajib melampirkan SK penunjukan ketua tim dan sertifikat penghargaan (jika ada).</li></ul>' },
-                { title: 'Anggota Tim', content: '<p class="font-semibold">Aturan Pengisian:</p><ul class="list-disc list-inside space-y-2 mt-2"><li><b>Nama Pencapaian:</b> Contoh: "Anggota Tim Podcast \'PASKALIBAH\'".</li><li><b>Pencapaian Kinerja:</b> Disesuaikan dengan SKP dan PPK tahun bertugas.</li><li><b>Penghargaan:</b> Diisi jika ada penghargaan terkait.</li><li><b>Dampak Kontribusi:</b> Ditetapkan sebagai "Dampak Rendah".</li><li><b>Bukti Pencapaian:</b> Wajib melampirkan SK penunjukan anggota tim dan sertifikat penghargaan (jika ada).</li></ul>' },
-                { title: 'Jabatan Pengelola Keuangan (Bendahara, PPK, PPSPM, PBJ)', content: '<p class="font-semibold">Aturan Pengisian:</p><ul class="list-disc list-inside space-y-2 mt-2"><li>Tetap dimasukkan sebagai "Pencapaian Kinerja" untuk jabatan pengelola keuangan dan Pejabat Pengadaan yang tidak termasuk sebagai kelompok jabatan di SIMPEG.</li><li>Wajib mencantumkan jabatannya (misalnya, "Bendahara", "PPK").</li><li><b>Penghargaan:</b> Diisi jika ada penghargaan terkait.</li><li><b>Dampak Kontribusi:</b> Ditetapkan sebagai "Dampak Sedang".</li><li><b>Bukti Pencapaian:</b> Wajib melampirkan SK Pengelola Keuangan/SK Pejabat Pengadaan dan sertifikat penghargaan (jika ada).</li></ul>' },
-                { title: 'Pelaksana Tugas (Plt.)', content: '<p class="font-semibold">Aturan Pengisian:</p><ul class="list-disc list-inside space-y-2 mt-2"><li>Pencapaian selama menjabat Plt dimasukkan ke dalam "Pencapaian Kinerja".</li><li><b>Penghargaan:</b> Diisi jika ada penghargaan terkait.</li><li><b>Dampak Kontribusi:</b> untuk Plt. Eselon IV Ditetapkan sebagai "Dampak Sedang", untuk Plt. Eselon III dan II ditetapkan sebagai "Dampak Tinggi".</li><li><b>Bukti Pencapaian:</b> Wajib melampirkan SK Plt. dan sertifikat penghargaan (jika ada).</li></ul>' }
-            ];
+            // Data for the new dropdown in "Panduan Peran Khusus"
+            const specialGuidanceDropdownData = {
+                ketua_tim: { title: 'Pengelola Tim (Ketua Tim)', content: '<p class="font-semibold">Aturan Pengisian:</p><ul class="list-disc list-inside space-y-2 mt-2"><li><b>Nama Pencapaian:</b> Contoh: "Ketua Tim Podcast \'PASKALIBAH\'".</li><li><b>Pencapaian Kinerja:</b> Disesuaikan dengan SKP dan PPK tahun bertugas.</li><li><b>Penghargaan:</b> Diisi jika ada penghargaan terkait.</li><li><b>Dampak Kontribusi:</b> Ditetapkan sebagai "Dampak Sedang".</li><li><b>Bukti Pencapaian:</b> Wajib melampirkan SK penunjukan ketua tim dan sertifikat penghargaan (jika ada).</li></ul>' },
+                anggota_tim: { title: 'Anggota Tim', content: '<p class="font-semibold">Aturan Pengisian:</p><ul class="list-disc list-inside space-y-2 mt-2"><li><b>Nama Pencapaian:</b> Contoh: "Anggota Tim Podcast \'PASKALIBAH\'".</li><li><b>Pencapaian Kinerja:</b> Disesuaikan dengan SKP dan PPK tahun bertugas.</li><li><b>Penghargaan:</b> Diisi jika ada penghargaan terkait.</li><li><b>Dampak Kontribusi:</b> Ditetapkan sebagai "Dampak Rendah".</li><li><b>Bukti Pencapaian:</b> Wajib melampirkan SK penunjukan anggota tim dan sertifikat penghargaan (jika ada).</li></ul>' },
+                pengelola_keuangan: { title: 'Jabatan Pengelola Keuangan (Bendahara, PPK, PPSPM, PBJ)', content: '<p class="font-semibold">Aturan Pengisian:</p><ul class="list-disc list-inside space-y-2 mt-2"><li>Tetap dimasukkan sebagai "Pencapaian Kinerja" untuk jabatan pengelola keuangan dan Pejabat Pengadaan yang tidak termasuk sebagai kelompok jabatan di SIMPEG.</li><li>Wajib mencantumkan jabatannya (misalnya, "Bendahara", "PPK").</li><li><b>Penghargaan:</b> Diisi jika ada penghargaan terkait.</li><li><b>Dampak Kontribusi:</b> Ditetapkan sebagai "Dampak Sedang".</li><li><b>Bukti Pencapaian:</b> Wajib melampirkan SK Pengelola Keuangan/SK Pejabat Pengadaan dan sertifikat penghargaan (jika ada).</li></ul>' },
+                plt: { title: 'Pelaksana Tugas (Plt.)', content: '<p class="font-semibold">Aturan Pengisian:</p><ul class="list-disc list-inside space-y-2 mt-2"><li>Pencapaian selama menjabat Plt dimasukkan ke dalam "Pencapaian Kinerja".</li><li><b>Penghargaan:</b> Diisi jika ada penghargaan terkait.</li><li><b>Dampak Kontribusi:</b> untuk Plt. Eselon IV Ditetapkan sebagai "Dampak Sedang", untuk Plt. Eselon III dan II ditetapkan sebagai "Dampak Tinggi".</li><li><b>Bukti Pencapaian:</b> Wajib melampirkan SK Plt. dan sertifikat penghargaan (jika ada).</li></ul>' }
+            };
 
-            const accordionContainer = document.getElementById('special-guidance-accordion');
-            if(accordionContainer) {
-                accordionContainer.innerHTML = '';
-                specialGuidanceData.forEach(item => {
-                    const accordionItem = document.createElement('div');
-                    accordionItem.className = 'accordion-item'; /* Use new class */
-                    accordionItem.innerHTML = `
-                        <button class="accordion-button">
-                            <span class="flex items-center gap-2">
-                                <i class="fas fa-info-circle text-blue-400"></i>
-                                <span>${item.title}</span>
-                            </span>
-                            <span class="accordion-icon transform transition-transform duration-300">▼</span>
-                        </button>
-                        <div class="accordion-content">${item.content}</div>
-                    `;
-                    accordionContainer.appendChild(accordionItem);
-                });
+            const roleSelector = document.getElementById('role-selector');
+            const roleExplanationBox = document.getElementById('role-explanation-box');
 
-                accordionContainer.addEventListener('click', (e) => {
-                    const button = e.target.closest('.accordion-button');
-                    if (button) {
-                        const accordionContent = button.nextElementSibling;
-                        const wasOpen = button.classList.contains('open');
-
-                        // Close all other accordions
-                        document.querySelectorAll('.accordion-button').forEach(btn => {
-                            if (btn !== button) {
-                                btn.classList.remove('open');
-                                btn.nextElementSibling.style.maxHeight = null;
-                                btn.nextElementSibling.style.paddingTop = '0';
-                                btn.nextElementSibling.style.paddingBottom = '0';
-                                btn.querySelector('.accordion-icon').style.transform = 'rotate(0deg)';
-                            }
-                        });
-
-                        // Toggle current accordion
-                        if (!wasOpen) {
-                            button.classList.add('open');
-                            accordionContent.style.maxHeight = accordionContent.scrollHeight + "px";
-                            accordionContent.style.paddingTop = '1rem';
-                            accordionContent.style.paddingBottom = '1rem';
-                            button.querySelector('.accordion-icon').style.transform = 'rotate(180deg)';
-                        } else {
-                            button.classList.remove('open');
-                            accordionContent.style.maxHeight = null;
-                            accordionContent.style.paddingTop = '0';
-                            accordionContent.style.paddingBottom = '0';
-                            button.querySelector('.accordion-icon').style.transform = 'rotate(0deg)';
-                        }
+            if (roleSelector && roleExplanationBox) {
+                roleSelector.addEventListener('change', (e) => {
+                    const selectedRoleKey = e.target.value;
+                    if (selectedRoleKey && specialGuidanceDropdownData[selectedRoleKey]) {
+                        const data = specialGuidanceDropdownData[selectedRoleKey];
+                        roleExplanationBox.innerHTML = `
+                            <h4 class="font-bold text-lg text-white mb-2">${data.title}</h4>
+                            ${data.content}
+                        `;
+                        roleExplanationBox.style.display = 'block'; // Show the box
+                    } else {
+                        roleExplanationBox.innerHTML = '';
+                        roleExplanationBox.style.display = 'none'; // Hide the box
                     }
                 });
             }
+
 
             const simulationData = {
                 ketua_tim: { nama: "Ketua Tim Podcast 'PASKALIBAH'", kinerja_option: "diatas_ekspektasi", penghargaan_option: "internal_lokal", dampak_option: "sedang" },
@@ -2000,21 +1914,15 @@
 
             function switchSertifikasiView(targetId) {
                 sertifikasiContentSections.forEach(section => {
-                    if (section) { // Defensive check
-                        section.style.display = 'none'; // Use direct style manipulation
-                        section.classList.remove('active');
-                        if ('#' + section.id === targetId) {
-                            section.style.display = 'block'; // Use direct style manipulation
-                            section.classList.add('active');
-                        }
+                    section.classList.remove('active');
+                    if ('#' + section.id === targetId) {
+                        section.classList.add('active');
                     }
                 });
                 sertifikasiSidebarLinks.forEach(link => {
-                    if (link) { // Defensive check
-                        link.classList.remove('sertifikasi-sidebar-active');
-                        if (link.getAttribute('href') === targetId) {
-                            link.classList.add('sertifikasi-sidebar-active');
-                        }
+                    link.classList.remove('sertifikasi-sidebar-active');
+                    if (link.getAttribute('href') === targetId) {
+                        link.classList.add('sertifikasi-sidebar-active');
                     }
                 });
                 // If switching to riwayat, ensure table view is active
@@ -2038,14 +1946,7 @@
             const createRiwayatButton = document.getElementById('create-riwayat-button');
             if (createRiwayatButton) {
                 createRiwayatButton.addEventListener('click', () => {
-                    const sertifikasiListView = document.getElementById('sertifikasi-list-view');
-                    const sertifikasiSimulasiForm = document.getElementById('sertifikasi-simulasi-form');
-                    if (sertifikasiListView) sertifikasiListView.style.display = 'none';
-                    if (sertifikasiSimulasiForm) sertifikasiSimulasiForm.style.display = 'block';
-                    const sertifikasiFormElement = document.getElementById('sertifikasi-form');
-                    if (sertifikasiFormElement) sertifikasiFormElement.reset(); // Reset form when opening
-                    const narrativeElement = document.getElementById('tingkat-sertifikasi-narrative-form');
-                    if(narrativeElement) narrativeElement.textContent = ''; // Clear narrative
+                    switchSertifikasiView('#sertifikasi-simulasi'); // Navigate to the form section
                 });
             }
 
@@ -2055,11 +1956,11 @@
                 sertifikasiForm.addEventListener('submit', (e) => {
                     e.preventDefault();
                     const newCert = {
-                        namaSertifikasi: document.getElementById('nama-sertifikasi-form').value,
-                        tingkatSertifikasi: document.getElementById('tingkat-sertifikasi-form').value,
-                        relevansi: document.getElementById('relevansi-sertifikasi-form').value,
-                        tingkatSertifikasiLainnya: document.getElementById('tingkat-sertifikasi-lainnya-form').value,
-                        jenisSertifikasi: document.getElementById('jenis-sertifikasi-form').value,
+                        namaSertifikasi: document.getElementById('nama-sertifikasi').value,
+                        tingkatSertifikasi: document.getElementById('tingkat-sertifikasi').value,
+                        relevansi: document.getElementById('relevansi-sertifikasi').value,
+                        tingkatSertifikasiLainnya: document.getElementById('tingkat-sertifikasi-lainnya').value,
+                        jenisSertifikasi: document.getElementById('jenis-sertifikasi').value,
                         buktiSertifikasiUrl: '', // Placeholder for actual upload
                         status: 'Diajukan' // Default status
                     };
@@ -2071,25 +1972,19 @@
             const cancelFormButton = document.getElementById('cancel-form-button');
             if (cancelFormButton) {
                 cancelFormButton.addEventListener('click', () => {
-                    const sertifikasiFormElement = document.getElementById('sertifikasi-form');
-                    if (sertifikasiFormElement) sertifikasiFormElement.reset();
-                    const sertifikasiListView = document.getElementById('sertifikasi-list-view');
-                    const sertifikasiSimulasiForm = document.getElementById('sertifikasi-simulasi-form');
-                    if (sertifikasiSimulasiForm) sertifikasiSimulasiForm.style.display = 'none';
-                    if (sertifikasiListView) sertifikasiListView.style.display = 'block';
-                    const narrativeElement = document.getElementById('tingkat-sertifikasi-narrative-form');
-                    if(narrativeElement) narrativeElement.textContent = ''; // Clear narrative on cancel
-                    filterAndSearchCertifications(); // Re-render certifications to show updated list
+                    document.getElementById('sertifikasi-form').reset();
+                    switchSertifikasiView('#sertifikasi-riwayat'); // Return to riwayat view
+                    document.getElementById('tingkat-sertifikasi-narrative').textContent = ''; // Clear narrative on cancel
                 });
             }
 
-            // Event listener for Tingkat Sertifikasi dropdown in form
-            const tingkatSertifikasiFormSelect = document.getElementById('tingkat-sertifikasi-form');
-            if (tingkatSertifikasiFormSelect) {
-                tingkatSertifikasiFormSelect.addEventListener('change', (e) => {
+            // Event listener for Tingkat Sertifikasi dropdown
+            const tingkatSertifikasiSelect = document.getElementById('tingkat-sertifikasi');
+            if (tingkatSertifikasiSelect) {
+                tingkatSertifikasiSelect.addEventListener('change', (e) => {
                     const selectedLevel = e.target.value;
-                    const narrativeElement = document.getElementById('tingkat-sertifikasi-narrative-form');
-                    if(narrativeElement) narrativeElement.textContent = tingkatSertifikasiNarratives[selectedLevel] || '';
+                    const narrativeElement = document.getElementById('tingkat-sertifikasi-narrative');
+                    narrativeElement.textContent = tingkatSertifikasiNarratives[selectedLevel] || '';
                 });
             }
 
@@ -2130,16 +2025,6 @@
                     currentView = 'card';
                     toggleCardView.classList.add('active');
                     toggleTableView.classList.remove('active');
-                    renderCertifications(displayedCertifications);
-                });
-            }
-
-            // Per page select
-            const perPageSelect = document.getElementById('per-page-select');
-            if (perPageSelect) {
-                perPageSelect.addEventListener('change', (e) => {
-                    itemsPerPage = parseInt(e.target.value, 10);
-                    currentPage = 1; // Reset to first page
                     renderCertifications(displayedCertifications);
                 });
             }
